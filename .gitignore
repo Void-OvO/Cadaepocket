@@ -1,0 +1,24 @@
+# 비밀값: API 키·VAPID 개인키·관리자 토큰 (.env.example 만 올린다)
+.env
+.env.*
+!.env.example
+
+# 서버 접속 키 (Lightsail 기본 키 등)
+*.pem
+*.key
+
+# DB (수집한 공지·푸시 구독 정보). data/seed.json 은 코드가 쓰므로 올린다
+data/*.db*
+*.sqlite*
+
+# 의존성·로그
+node_modules/
+npm-debug.log*
+*.log
+
+# OS·에디터
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
