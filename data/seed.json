@@ -1,0 +1,668 @@
+[
+ {
+  "campus": "sim",
+  "cat": "aca",
+  "no": 277473,
+  "dept": "학부대학운영팀",
+  "posted": "2026-11-05",
+  "start": "2026-11-06",
+  "end": "2026-11-10",
+  "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277473",
+  "ocr": false,
+  "title": "[가톨릭공유대학(CU12)] 2026학년도 겨울 계절학기 수강신청 안내",
+  "tx": {
+   "ko": {
+    "title": "[가톨릭공유대학(CU12)] 2026학년도 겨울 계절학기 수강신청 안내",
+    "who": "겨울 계절학기에 공유대학(CU12) 교과목을 수강하려는 학생 (4학년 2학기는 본교 개설 과목만 가능)",
+    "docs": "없음 (첨부: 수강신청 매뉴얼 PDF)",
+    "how": "CU12 수강신청 사이트에서 신청 · 트리니티 아이디로 로그인"
+   },
+   "en": {
+    "title": "[Catholic Shared University (CU12)] Winter Session Course Registration 2026",
+    "who": "Students who want to take CU12 courses in the winter session (final-semester seniors: home-campus courses only)",
+    "docs": "None (registration manual PDF attached)",
+    "how": "Register on the CU12 site, signing in with your Trinity ID"
+   },
+   "zh": {
+    "title": "[天主教共享大学(CU12)] 2026学年冬季学期选课通知",
+    "who": "希望在冬季学期修读CU12课程的学生（第8学期学生仅可修读本校课程）",
+    "docs": "无（附选课手册PDF）",
+    "how": "在CU12选课网站申请，使用Trinity账号登录"
+   }
+  },
+  "per": null,
+  "criteria": {
+   "statuses": [
+    "재학"
+   ],
+   "grades": null,
+   "minGpa": null,
+   "minDone": null,
+   "maxDone": null,
+   "audience": null,
+   "excludeExchange": false,
+   "depts": null,
+   "uncertain": [],
+   "boost": null
+  }
+ },
+ {
+  "campus": "sim",
+  "cat": "aca",
+  "no": 277453,
+  "dept": "학사행정팀",
+  "posted": "2026-11-04",
+  "start": "2026-11-09",
+  "end": "2026-11-19",
+  "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277453",
+  "ocr": false,
+  "title": "[학사행정팀] 2027-1학기 예비 수강신청 안내 (교과목 선호도 조사)",
+  "tx": {
+   "ko": {
+    "title": "[학사행정팀] 2027-1학기 예비 수강신청 안내 (교과목 선호도 조사)",
+    "who": "재학생 · 2027-1학기 복학 대상자 (약학과 개설 과목 등은 제외)",
+    "docs": "없음",
+    "how": "트리니티 > 학사정보 > 수업/성적 > 수강신청 > 예비수강신청 (본 수강신청은 2027년 2월 초에 따로 해야 해요)"
+   },
+   "en": {
+    "title": "[Academic Affairs] Preliminary Course Registration for Spring 2027 (Course Preference Survey)",
+    "who": "Enrolled students and students returning in Spring 2027 (some courses excluded)",
+    "docs": "None",
+    "how": "Trinity > Academic Info > Classes/Grades > Course Registration > Preliminary (the regular registration in early Feb. is separate)"
+   },
+   "zh": {
+    "title": "[学务行政组] 2027学年第一学期预选课通知（课程意向调查）",
+    "who": "在读生及2027年第一学期预定复学者（部分课程除外）",
+    "docs": "无",
+    "how": "Trinity > 学务信息 > 课程/成绩 > 选课 > 预选课（正式选课将于2027年2月初另行进行）"
+   }
+  },
+  "per": null,
+  "criteria": {
+   "statuses": [
+    "재학",
+    "휴학",
+    "복학 예정"
+   ],
+   "grades": null,
+   "minGpa": null,
+   "minDone": null,
+   "maxDone": null,
+   "audience": null,
+   "excludeExchange": false,
+   "depts": null,
+   "uncertain": [],
+   "boost": [
+    "휴학",
+    "복학 예정"
+   ]
+  }
+ },
+ {
+  "campus": "sim",
+  "cat": "aca",
+  "no": 277244,
+  "dept": "학사행정팀",
+  "posted": "2026-10-28",
+  "start": "2026-11-06",
+  "end": "2026-11-09",
+  "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277244",
+  "ocr": false,
+  "title": "[학사행정팀] 2026-겨울계절학기 고려대학교 학점교류 안내",
+  "tx": {
+   "ko": {
+    "title": "[학사행정팀] 2026-겨울계절학기 고려대학교 학점교류 안내",
+    "who": "4학기 이상 이수한 학부생 · 직전 학기까지 평점 3.00 이상 (졸업예정자·8학기 이상 재학생 제외)",
+    "docs": "학점교류 신청서·학점인정 신청서, 개인정보 동의서, 국내대학간 학점교류 신청서, 고려대 양식 신청서",
+    "how": "트리니티 신청 → 전공주임·학부(과)장 날인 → 학사지원팀 방문 제출 (11/9 17:00까지)"
+   },
+   "en": {
+    "title": "[Academic Affairs] Credit Exchange with Korea University, Winter Session 2026",
+    "who": "Undergraduates with 4+ semesters completed and GPA 3.00+ (graduating students and 8th-semester or higher excluded)",
+    "docs": "Credit exchange and recognition forms, privacy consent, inter-university forms, Korea Univ. form",
+    "how": "Apply on Trinity → get department seals → submit in person to Academic Support (by 5 PM, Nov 9)"
+   },
+   "zh": {
+    "title": "[学务行政组] 2026冬季学期高丽大学学分交流通知",
+    "who": "已完成4个学期以上、上学期前平均绩点3.00以上的本科生（毕业预定者及第8学期以上学生除外）",
+    "docs": "学分交流/学分认定申请表、个人信息同意书、国内大学间学分交流申请表、高丽大学表格",
+    "how": "Trinity申请 → 系主任盖章 → 亲自提交学务支援组（11月9日17:00前）"
+   }
+  },
+  "per": null,
+  "criteria": {
+   "statuses": [
+    "재학"
+   ],
+   "grades": null,
+   "minGpa": 3,
+   "minDone": 4,
+   "maxDone": 6,
+   "audience": null,
+   "excludeExchange": true,
+   "depts": null,
+   "uncertain": [],
+   "boost": null
+  }
+ },
+ {
+  "campus": "sim",
+  "cat": "aca",
+  "no": 276928,
+  "dept": "융합전공학부",
+  "posted": "2026-10-21",
+  "start": "2026-10-26",
+  "end": "2026-11-13",
+  "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=276928",
+  "ocr": false,
+  "title": "[융합전공학부] 2026-2학기 학생설계전공 신규·변경·포기 신청 안내",
+  "tx": {
+   "ko": {
+    "title": "[융합전공학부] 2026-2학기 학생설계전공 신규·변경·포기 신청 안내",
+    "who": "2학기 이상 재학생 (8학기 재학생은 추가 학기를 다니는 경우에만)",
+    "docs": "신설: 신청서 · 이수계획표 / 변경·포기: 신청서 (교과목 변경 시 이수계획표 추가)",
+    "how": "신설은 트리니티에서 먼저 신청 후 서류 제출, 변경·포기는 서류 제출. 결과는 12월 말 개별 통보"
+   },
+   "en": {
+    "title": "[School of Convergence Studies] Student-Designed Major: New / Change / Withdraw (Fall 2026)",
+    "who": "Students in their 2nd semester or later (8th-semester students only if enrolled for an extra term)",
+    "docs": "New: application + course plan / Change or withdraw: application (+ course plan if courses change)",
+    "how": "New: apply on Trinity first, then submit documents. Results by end of December"
+   },
+   "zh": {
+    "title": "[融合专业学部] 2026学年第二学期学生设计专业 新设·变更·放弃申请通知",
+    "who": "第2学期以上在读生（第8学期学生仅限继续在读时）",
+    "docs": "新设：申请书、修读计划表；变更·放弃：申请书（变更课程时追加修读计划表）",
+    "how": "新设须先在Trinity申请再提交材料；变更·放弃提交材料。12月底个别通知结果"
+   }
+  },
+  "per": null,
+  "criteria": {
+   "statuses": [
+    "재학"   ],
+   "grades": null,
+   "minGpa": null,
+   "minDone": 1,
+   "maxDone": null,
+   "audience": null,
+   "excludeExchange": true,
+   "depts": null,
+   "uncertain": [
+    {
+     "ko": "8학기 재학생은 추가 학기 재학 시에만 가능",
+     "en": "8th-semester students: only if enrolled for an extra term",
+     "zh": "第8学期学生仅限继续在读时",
+     "ifDoneAtLeast": 7
+    }
+   ],
+   "boost": null
+  }
+ },
+ {
+  "campus": "sim",
+  "cat": "gen",
+  "no": 277446,
+  "dept": "기숙사운영센터",
+  "posted": "2026-11-04",
+  "start": "2026-11-16",
+  "end": "2026-11-20",
+  "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277446",
+  "ocr": true,
+  "title": "[기숙사운영센터] 2026학년도 동계방학 기숙사(K,A관) 모집공고",
+  "tx": {
+   "ko": {
+    "title": "[기숙사운영센터] 2026학년도 동계방학 기숙사(K,A관) 모집공고",
+    "who": "학부생 · 대학원생 · 휴학생 (내·외국인) — 이미지에서 읽음",
+    "docs": "없음 (합격 후 결핵검진 결과표 제출)",
+    "how": "Trinity에서 입사 신청(11/16 10:00 ~ 11/20 23:59) → 합격 발표 11/24 16:00 → 호실 신청 → 기숙사비 납부. 호실 신청·납부를 기간 내 못 하면 합격이 취소돼요"
+   },
+   "en": {
+    "title": "[Dormitory Center] Winter Break Dormitory (K, A Halls) Recruitment 2026",
+    "who": "Undergraduates, graduate students, students on leave (domestic and international), read from the images",
+    "docs": "None (TB test result required after admission)",
+    "how": "Apply on Trinity (Nov 16 10:00 – Nov 20 23:59) → results Nov 24 4 PM → choose a room → pay fees. Admission is cancelled if you miss these steps"
+   },
+   "zh": {
+    "title": "[宿舍运营中心] 2026学年寒假宿舍（K、A馆）招募公告",
+    "who": "本科生·研究生·休学生（内外国人）——从图片中读取",
+    "docs": "无（录取后提交结核检查结果）",
+    "how": "在Trinity申请入住（11月16日10:00至11月20日23:59）→ 11月24日16:00公布结果 → 申请房间 → 缴纳宿舍费。未按期完成将取消录取"
+   }
+  },
+  "per": null,
+  "criteria": {
+   "statuses": [
+    "재학",
+    "휴학",
+    "복학 예정"   ],
+   "grades": null,
+   "minGpa": null,
+   "minDone": null,
+   "maxDone": null,
+   "audience": null,
+   "excludeExchange": false,
+   "depts": null,
+   "uncertain": [],
+   "boost": null
+  }
+ },
+ {
+  "campus": "sim",
+  "cat": "job",
+  "no": 277447,
+  "dept": "대학일자리플러스센터",
+  "posted": "2026-11-04",
+  "start": "2026-11-03",
+  "end": "2026-11-11",
+  "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277447",
+  "ocr": false,
+  "title": "[대학일자리플러스센터] 「바이오헬스 일자리 아카데미」 참여자 모집 안내",
+  "tx": {
+   "ko": {
+    "title": "[대학일자리플러스센터] 「바이오헬스 일자리 아카데미」 참여자 모집 안내",
+    "who": "바이오헬스 분야 취업에 관심 있는 누구나",
+    "docs": "없음",
+    "how": "기수별 신청 링크에서 온라인 신청 (1기 11/11, 2기 11/18까지)"
+   },
+   "en": {
+    "title": "[University Job Plus Center] Bio-Health Job Academy: Call for Participants",
+    "who": "Anyone interested in a career in bio-health",
+    "docs": "None",
+    "how": "Apply online via each cohort link (Cohort 1: Nov 11, Cohort 2: Nov 18)"
+   },
+   "zh": {
+    "title": "[大学就业Plus中心]「生物健康就业学院」学员招募通知",
+    "who": "对生物健康领域就业感兴趣的任何人",
+    "docs": "无",
+    "how": "通过各期申请链接在线申请（第1期11月11日，第2期11月18日截止）"
+   }
+  },
+  "per": null,
+  "criteria": {
+   "statuses": [
+    "재학",
+    "휴학",
+    "복학 예정"   ],
+   "grades": null,
+   "minGpa": null,
+   "minDone": null,
+   "maxDone": null,
+   "audience": null,
+   "excludeExchange": false,
+   "depts": null,
+   "uncertain": [],
+   "boost": null
+  }
+ },
+ {
+  "campus": "sim",
+  "cat": "job",
+  "no": 277450,
+  "dept": "대학일자리플러스센터",
+  "posted": "2026-11-04",
+  "start": null,
+  "end": null,
+  "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277450",
+  "ocr": true,
+  "title": "[대학일자리플러스센터] 중소기업중앙회 주관 '우수 중소기업 진로가이드 교육' 특강 신청 안내",
+  "tx": {
+   "ko": {
+    "title": "[대학일자리플러스센터] 중소기업중앙회 주관 '우수 중소기업 진로가이드 교육' 특강 신청 안내",
+    "who": "4년제 대학생 (취업역량 강화 특강) — 이미지에서 읽음",
+    "docs": "없음",
+    "how": "대학일자리플러스센터 홈페이지에서 신청 · 11/17(화) 14:00~16:00, M213 강의실"
+   },
+   "en": {
+    "title": "[University Job Plus Center] Career Guide Lecture on Excellent SMEs (KBIZ)",
+    "who": "Four-year university students (job-skills lecture), read from the images",
+    "docs": "None",
+    "how": "Register on the University Job Plus Center website · Nov 17, 2–4 PM, Room M213"
+   },
+   "zh": {
+    "title": "[大学就业Plus中心] 中小企业中央会主办“优秀中小企业职业指南教育”讲座申请通知",
+    "who": "四年制大学生（就业能力强化讲座）——从图片中读取",
+    "docs": "无",
+    "how": "在大学就业Plus中心网站申请 · 11月17日 14:00~16:00，M213教室"
+   }
+  },
+  "per": {
+   "ko": "특강 11/17(화) 14:00~16:00",
+   "en": "Lecture: Nov 17, 2–4 PM",
+   "zh": "讲座：11月17日 14:00~16:00"
+  },
+  "criteria": {
+   "statuses": [
+    "재학",
+    "휴학",
+    "복학 예정"   ],
+   "grades": null,
+   "minGpa": null,
+   "minDone": null,
+   "maxDone": null,
+   "audience": null,
+   "excludeExchange": false,
+   "depts": null,
+   "uncertain": [
+    {
+     "ko": "신청 마감일이 적혀 있지 않아요",
+     "en": "No application deadline is stated",
+     "zh": "未注明申请截止日期"
+    }
+   ],
+   "boost": null
+  }
+ },
+ {
+  "campus": "ui",
+  "cat": "sch",
+  "no": 105354,
+  "dept": "학사지원팀",
+  "posted": "2026-11-03",
+  "start": "2026-11-03",
+  "end": "2026-11-13",
+  "url": "https://songeui.catholic.ac.kr/ko/news/notice.do?mode=view&articleNo=105354",
+  "ocr": false,
+  "title": "[의대/간대] 2026학년도 2학기 성적향상장학금 신청 안내",
+  "tx": {
+   "ko": {
+    "title": "[의대/간대] 2026학년도 2학기 성적향상장학금 신청 안내",
+    "who": "성의교정 재학생 (1학년 제외) · 전 학기 평균 70점 이상, 직전 학기 10점 이상 상승",
+    "docs": "성적향상장학금 신청서 1부 (소정 양식)",
+    "how": "의과대학은 학사지원팀(성의회관 4층), 간호대학은 구글클래스 '학년도 공지사항'에 과제로 제출"
+   },
+   "en": {
+    "title": "[Med/Nursing] Grade Improvement Scholarship, Fall 2026",
+    "who": "Medicine and Nursing students (not Year 1) · prior average 70+, up 10+ points last term",
+    "docs": "Grade Improvement Scholarship application (1 copy)",
+    "how": "Nursing: Google Classroom / Medicine: Academic Support Team"
+   }
+  },
+  "per": null,
+  "criteria": {
+   "statuses": [
+    "재학"
+   ],
+   "grades": [
+    2,
+    3,
+    4
+   ],
+   "minGpa": null,
+   "minDone": null,
+   "maxDone": null,
+   "audience": null,
+   "excludeExchange": false,
+   "depts": null,
+   "uncertain": [
+    {
+     "ko": "직전 학기 성적 10점 이상 상승 · 타 장학금 비수혜",
+     "en": "Grades up 10+ points last term · no other scholarship",
+     "zh": "上学期成绩提高10分以上 · 未获其他奖学金"
+    }
+   ],
+   "boost": null
+  }
+ },
+ {
+  "campus": "ui",
+  "cat": "sch",
+  "no": 105353,
+  "dept": "학사지원팀",
+  "posted": "2026-11-03",
+  "start": "2026-11-03",
+  "end": "2026-11-13",
+  "url": "https://songeui.catholic.ac.kr/ko/news/notice.do?mode=view&articleNo=105353",
+  "ocr": false,
+  "title": "[의대/간대] 2026학년도 2학기 생활보조장학금 신청 안내",
+  "tx": {
+   "ko": {
+    "title": "[의대/간대] 2026학년도 2학기 생활보조장학금 신청 안내",
+    "who": "국민기초생활보장법상 수급자인 의과대학·간호대학 재학생 (다른 장학금과 중복 수혜 가능)",
+    "docs": "신청서 1부 · 수급자 증명서 1부 · 주민등록등본 1부 (부모 모두 기재되지 않으면 가족관계증명서 추가)",
+    "how": "의과대학은 학사지원팀(성의회관 4층), 간호대학은 구글클래스 '학년도 공지사항'에 과제로 제출"
+   },
+   "en": {
+    "title": "[Med/Nursing] Living Support Scholarship, Fall 2026",
+    "who": "Medicine/Nursing students who are basic livelihood recipients (may overlap with other scholarships)",
+    "docs": "Application, recipient certificate, resident registration (plus family relation certificate if needed)",
+    "how": "Nursing: Google Classroom / Medicine: Academic Support Team"
+   }
+  },
+  "per": null,
+  "criteria": {
+   "statuses": [
+    "재학"
+   ],
+   "grades": null,
+   "minGpa": null,
+   "minDone": null,
+   "maxDone": null,
+   "audience": null,
+   "excludeExchange": false,
+   "depts": null,
+   "uncertain": [
+    {
+     "ko": "국민기초생활수급자 여부",
+     "en": "Basic livelihood recipient status",
+     "zh": "是否为基本生活保障对象"
+    }
+   ],
+   "boost": null
+  }
+ },
+ {
+  "campus": "ui",
+  "cat": "sch",
+  "no": 105352,
+  "dept": "학사지원팀",
+  "posted": "2026-11-03",
+  "start": "2026-11-03",
+  "end": "2026-11-13",
+  "url": "https://songeui.catholic.ac.kr/ko/news/notice.do?mode=view&articleNo=105352",
+  "ocr": false,
+  "title": "[의대/간대] 2026학년도 2학기 가족장학금 신청 안내",
+  "tx": {
+   "ko": {
+    "title": "[의대/간대] 2026학년도 2학기 가족장학금 신청 안내",
+    "who": "직계가족 2명 이상이 3개 교정 학부에 재학 중이면 저학년 학생 · 전 학년말 평균 80점 이상 (간호대는 직전 학기)",
+    "docs": "신청서 1부 · 주민등록등본(신규·변동 시) · 재학증명서(성의교정 학생 제외)",
+    "how": "의과대학은 학사지원팀(성의회관 4층), 간호대학은 구글클래스 '학년도 공지사항'에 과제로 제출"
+   },
+   "en": {
+    "title": "[Med/Nursing] Family Scholarship, Fall 2026",
+    "who": "Lower-year student when 2+ immediate family attend the 3 campuses · prior-year average 80+",
+    "docs": "Application, resident registration (if new/changed), enrollment certificate (not for Songeui students)",
+    "how": "Nursing: Google Classroom / Medicine: Academic Support Team"
+   }
+  },
+  "per": null,
+  "criteria": {
+   "statuses": [
+    "재학"
+   ],
+   "grades": null,
+   "minGpa": null,
+   "minDone": null,
+   "maxDone": null,
+   "audience": null,
+   "excludeExchange": false,
+   "depts": null,
+   "uncertain": [
+    {
+     "ko": "직계가족 2명 이상이 3개 교정에 재학 중인지",
+     "en": "2+ immediate family enrolled across the 3 campuses",
+     "zh": "直系亲属2人以上是否在三个校区就读"
+    }
+   ],
+   "boost": null
+  }
+ },
+ {
+  "campus": "ui",
+  "cat": "sch",
+  "no": 105346,
+  "dept": "학사지원팀",
+  "posted": "2026-11-02",
+  "start": "2026-11-02",
+  "end": "2026-12-01",
+  "url": "https://songeui.catholic.ac.kr/ko/news/notice.do?mode=view&articleNo=105346",
+  "ocr": true,
+  "title": "2027년도 가톨릭대학교 내과연구재단 장학생 모집",
+  "tx": {
+   "ko": {
+    "title": "2027년도 가톨릭대학교 내과연구재단 장학생 모집",
+    "who": "의과대학 재학생 (내과학에 관심 있는 학생 우대) · 타 장학금과 중복 수혜 불가 — 이미지에서 읽음",
+    "docs": "장학금 신청서 1부 · 구비서류 각 1부 (주민등록등본, 소득금액증명서, 건강보험 납부확인서, 성적증명서 등)",
+    "how": "내과연구재단 사무실에 우편 접수(원본 제출) → 서류 검토·면접 → 12/30 결과 발표. 선발 2명, 등록금 전액"
+   }
+  },
+  "per": null,
+  "criteria": {
+   "statuses": [
+    "재학"
+   ],
+   "grades": null,
+   "minGpa": null,
+   "minDone": null,
+   "maxDone": null,
+   "audience": null,
+   "excludeExchange": false,
+   "depts": [
+    "의학과"
+   ],
+   "uncertain": [],
+   "boost": null
+  }
+ },
+ {
+  "campus": "ui",
+  "cat": "sch",
+  "no": 105331,
+  "dept": "학사지원팀",
+  "posted": "2026-10-29",
+  "start": "2026-10-27",
+  "end": "2026-11-18",
+  "url": "https://songeui.catholic.ac.kr/ko/news/notice.do?mode=view&articleNo=105331",
+  "ocr": true,
+  "title": "2027학년도 가톨릭대학교 의과대학 총동문회 장학생 모집 안내",
+  "tx": {
+   "ko": {
+    "title": "2027학년도 가톨릭대학교 의과대학 총동문회 장학생 모집 안내",
+    "who": "의과대학 재학생 (복학 예정자 포함) · 환자와 사회에 봉사할 의지가 있는 학생 — 이미지에서 읽음",
+    "docs": "장학금 신청서 1부 · 구비서류 각 1부 (미제출 시 선발 제외)",
+    "how": "총동문회 장학재단 사무국에 11/18 16:00까지 제출 → 서류 검토·면접 → 11/30 발표. 12명 내외, 등록금 전액"
+   }
+  },
+  "per": null,
+  "criteria": {
+   "statuses": [
+    "재학",
+    "휴학",
+    "복학 예정"
+   ],
+   "grades": null,
+   "minGpa": null,
+   "minDone": null,
+   "maxDone": null,
+   "audience": null,
+   "excludeExchange": false,
+   "depts": [
+    "의학과"
+   ],
+   "uncertain": [],
+   "boost": null
+  }
+ },
+ {
+  "campus": "ui",
+  "cat": "gen",
+  "no": 105330,
+  "dept": "학사지원팀",
+  "posted": "2026-10-28",
+  "start": null,
+  "end": "2026-11-06",
+  "url": "https://songeui.catholic.ac.kr/ko/news/notice.do?mode=view&articleNo=105330",
+  "ocr": true,
+  "title": "제47회 가대문화상 및 제18회 한센병문화상 공모 기간 연장 안내",
+  "tx": {
+   "ko": {
+    "title": "제47회 가대문화상 및 제18회 한센병문화상 공모 기간 연장 안내",
+    "who": "성신·성심·성의 재학생 (휴학생·대학원생 제외) — 이미지에서 읽음",
+    "docs": "작품 (시 3편 이상 / 소설 60~100매 / 수필 20매 내외 / 평론 40매 내외 / 사진) · 이름·전공·학번·연락처 기재",
+    "how": "이메일(cukpress@naver.com)로 제출 · 기한이 10/30에서 11/6(금)까지로 연장됐어요"
+   },
+   "en": {
+    "title": "47th CUK Culture Prize & 18th Hansen Culture Prize: Deadline Extended",
+    "who": "Songsin, Songsim and Songeui enrolled students (not on leave, not graduate), read from the images",
+    "docs": "Entries (poems, fiction, essays, criticism, photos) with name, major, student ID, contact",
+    "how": "Submit by email (cukpress@naver.com) · extended from Oct 30 to Nov 6"
+   }
+  },
+  "per": {
+   "ko": "~ 11/6 (기간 연장)",
+   "en": "Until Nov 6 (extended)",
+   "zh": "截至11月6日（已延期）"
+  },
+  "criteria": {
+   "statuses": [
+    "재학"   ],
+   "grades": null,
+   "minGpa": null,
+   "minDone": null,
+   "maxDone": null,
+   "audience": null,
+   "excludeExchange": false,
+   "depts": null,
+   "uncertain": [],
+   "boost": null
+  }
+ },
+ {
+  "campus": "ui",
+  "cat": "aca",
+  "no": 92297,
+  "dept": "간호대행정팀",
+  "posted": "2025-03-18",
+  "start": null,
+  "end": null,
+  "url": "https://songeui.catholic.ac.kr/ko/news/notice.do?mode=view&articleNo=92297",
+  "ocr": false,
+  "title": "[간호대학] 해외 증명서류 발급 신청 안내",
+  "tx": {
+   "ko": {
+    "title": "[간호대학] 해외 증명서류 발급 신청 안내",
+    "who": "해외 제출용 증명서류가 필요한 간호대학 학부생",
+    "docs": "기관 자체 Request Form(PDF) · 구글 폼 제출",
+    "how": "통합인증시스템 > 학적/졸업 > 제증명신청등록에서 신청 → 구글 폼 → 이메일 발송 (준비 약 2주)"
+   },
+   "en": {
+    "title": "[Nursing] Overseas Certificate Request Guide",
+    "who": "Nursing undergraduates who need documents for overseas submission",
+    "docs": "Institution's Request Form (PDF) · Google Form",
+    "how": "Request in the portal, fill the Google Form, then email the PDF (about 2 weeks)"
+   }
+  },
+  "per": {
+   "ko": "상시 안내 (매월 마지막 주 제외)",
+   "en": "Ongoing (not in the last week of each month)",
+   "zh": "常年（每月最后一周除外）"
+  },
+  "criteria": {
+   "statuses": [
+    "재학",
+    "휴학",
+    "복학 예정"   ],
+   "grades": null,
+   "minGpa": null,
+   "minDone": null,
+   "maxDone": null,
+   "audience": null,
+   "excludeExchange": false,
+   "depts": [
+    "간호학과"
+   ],
+   "uncertain": [],
+   "boost": null
+  }
+ }
+]
