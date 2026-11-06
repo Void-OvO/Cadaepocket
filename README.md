@@ -34,6 +34,8 @@ npm test                    # 28개 테스트
 | `web/depts.js` | 학과 → 단과대학 목록과 학과 게시판 주소(서버·앱 공용). 초기 설정 자동완성과 학과 수집원에 씀 |
 | `web/` | PWA (홈·학과·상세·캘린더·저장·설정, 3개 언어, 오프라인 캐시, 서비스 워커) |
 
+**학과 공지**: 각 학과 사이트의 공지 게시판을 따로 수집합니다. 성심 학과는 대부분 `https://{slug}.catholic.ac.kr/{slug}/community/notice.do`이고, 일어일본문화학과(`/japanese/major/notice.do`)·바이오로직스공학부(`ble.catholic.ac.kr/BLE/...`)·융합전공학부(`/major_convergence/notice/notice.do`)는 주소가 달라 `web/depts.js`에 따로 적었습니다. 2026-11-06에 성심 학과 게시판 45곳을 모두 열어 목록이 읽히는 것을, 그중 5곳은 실제 수집(상세·첨부까지)을 확인했습니다. 성의 의예·의학·간호는 의과대학·간호대학 게시판을 씁니다. 학과 게시판에서만 본 공지는 홈 피드에 섞지 않고 '학과' 탭에서만 보이며, 새 공지 푸시도 보내지 않습니다. 예술미디어융합학과 게시판(gamc)에는 대학원 공지도 함께 올라옵니다. 학과 목록은 나무위키 '가톨릭대학교/학부'(2026-09 판)를 참고했으니 학교 공식 목록과 한 번 대조하세요.
+
 **마지막 업데이트**: 목록 위에는 그 게시판을 마지막으로 수집한 시각, 공지 상세에는 앱이 그 공지를 원문에서 마지막으로 확인한 시각(`checked_at`)을 보여 줍니다.
 
 API: `GET /api/notices?campus=sim|ui&cat=&board=` (board: 학과 게시판 키, 예 `dept-psychology`) · `GET /api/notices/:id` · `GET /api/changes` · `POST /api/push/subscribe|unsubscribe` · `POST /api/reports` · `POST /api/admin/crawl`(Bearer `ADMIN_TOKEN`) · `GET /api/health`
