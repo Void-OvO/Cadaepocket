@@ -39,7 +39,12 @@ const SOURCES = [
   }
 ];
 
+/* 학과 게시판 (web/depts.js 의 학과 목록에서 만든다). scope:'dept' 공지는 홈 피드에 섞지 않고 '학과' 탭에서만 보인다.
+ * 성의교정 학과(의예·의학·간호)는 위의 ui-medicine·ui-nursing 게시판을 그대로 쓴다. CRAWL_DEPTS=0 이면 수집하지 않는다 */
+const DEPTS = require('../web/depts.js');
+for (const b of DEPTS.BOARDS) SOURCES.push({ key: b.key, campus: b.campus, board: b.board, base: b.base, categories: null, defaultCat: 'gen', scope: 'dept', active: process.env.CRAWL_DEPTS !== '0' });
+
 /* 캠퍼스별로 앱에 보여줄 분류 탭 */
 const CAMPUS_CATS = { sim: ['aca', 'sch', 'job', 'gen'], ui: ['aca', 'sch', 'evt', 'gen'] };
 
-module.exports = { CAMPUSES, CATEGORY_MAP, SOURCES, CAMPUS_CATS };
+module.exports = { CAMPUSES, CATEGORY_MAP, SOURCES, CAMPUS_CATS, DEPTS };
