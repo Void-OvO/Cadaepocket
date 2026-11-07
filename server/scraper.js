@@ -194,7 +194,11 @@ async function crawlSource(db, src, ctx) {
   const cats = src.categories ? Object.keys(src.categories) : [null];
   const limit = 10;
   const recheckFrom = new Date(Date.now() - cfg.recheckDays * 86400000).toISOString().slice(0, 10);
-  const pages = src.scope === 'dept' ? Math.min(ctx.maxPages, ctx.deptPages) : ctx.maxPages;
+  // 앞쪽 minPages 는 항상 보고(최근 공지 정정 확인·고정글 순서), 그 뒤로는 처음 보는 최근 글이 나오는 동안만 다음 페이지로 간다.
+  // 예전에는 분류마다 2페이지로 끝나서, 첫 수집 때나 서버가 멈췄던 동안 3페이지 뒤로 밀려난 글은 영영 수집되지 않았다
+  const minPages = src.scope === 'dept' ? Math.min(ctx.maxPages, ctx.deptPages) : ctx.maxPages;
+  const capPages = Math.max(minPages, src.scope === 'dept' ? ctx.deptPageCap : ctx.pageCap);
+  const backfillFrom = new Date(Date.now() - ctx.backfillDays * 86400000).toISOString().slice(0, 10);
   const sub = Object.assign({}, ctx, { analyzer: src.scope === 'dept' ? ctx.deptAnalyzer : ctx.analyzer });
   // 상단 고정('공지')은 이번 목록 기준으로 다시 매긴다: 고정이 풀린 글은 0 으로, 고정글은 게시판 위 순서대로
   db.prepare('UPDATE notice_board SET pinned=0, pin_rank=NULL WHERE source_key=?').run(src.key);
@@ -202,13 +206,15 @@ async function crawlSource(db, src, ctx) {
   const markPin = row => db.prepare('UPDATE notice_board SET pinned=?, pin_rank=? WHERE source_key=? AND notice_id=(SELECT id FROM notice WHERE campus_id=? AND external_no=?)')
     .run(row.pinned ? 1 : 0, row.pinned ? pinRank++ : null, src.key, src.campus, row.no);
   for (const catId of cats) {
-    for (let page = 0; page < pages; page++) {
+    for (let page = 0; page < capPages; page++) {
       const html = await fetchText(listUrl(src, catId, page * limit, limit), ctx);
       const { rows } = parseList(html);
       if (!rows.length) break;
+      let freshNew = 0;                                   // 이 페이지에서 처음 보는, 기준일 이후 글 수 (고정글 제외: 페이지마다 반복된다)
       for (const row of rows) {
         const key = row.no; if (seen.has(key)) continue; seen.add(key);
         const ex = db.prepare('SELECT id,posted_at,deleted FROM notice WHERE campus_id=? AND external_no=?').get(src.campus, row.no);
+        if (!ex && !row.pinned && (!row.date || row.date >= backfillFrom)) freshNew++;
         const recent = ex && ex.posted_at && ex.posted_at >= recheckFrom;
         if (ex && !recent && !ex.deleted) {
           // 오래된 공지는 다시 열지 않지만, 목록에서 그대로 있는 것을 확인한 시각과 게시판은 남긴다
@@ -226,6 +232,7 @@ async function crawlSource(db, src, ctx) {
         } catch (e) { console.warn(`[crawl] ${src.key} #${row.no} 실패: ${e.message}`); ctx.errors.push(`${src.key}#${row.no}: ${e.message}`); }
       }
       await sleep(ctx.delayMs);
+      if (page + 1 >= minPages && !freshNew) break;       // 더 넘겨도 새로 채울 최근 글이 없다
     }
   }
   return events;
@@ -239,6 +246,8 @@ async function crawlAll(db, opts) {
   const deptAnalyzer = opts.analyzer || (cfg.deptAi ? analyzer : n => localAnalyze(n, opts.fetch));
   const ctx = { fetch: opts.fetch || fetch, analyzer, deptAnalyzer,
     maxPages: opts.maxPages || cfg.crawlMaxPages, deptPages: opts.deptPages || cfg.crawlDeptPages,
+    pageCap: opts.pageCap || cfg.crawlPageCap, deptPageCap: opts.deptPageCap || cfg.crawlDeptPageCap,
+    backfillDays: opts.backfillDays != null ? opts.backfillDays : cfg.crawlBackfillDays,
     delayMs: opts.delayMs != null ? opts.delayMs : cfg.crawlDelayMs, errors: [] };
   const events = [];
   for (const src of SOURCES) {
