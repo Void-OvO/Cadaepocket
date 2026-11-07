@@ -1,5 +1,5 @@
 'use strict';
-var V = 'catolimi-v26';
+var V = 'catolimi-v27';
 var SHELL = ['/', '/index.html', '/style.css', '/app.js', '/match.js', '/depts.js', '/i18n.js', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon.svg'];
 
 self.addEventListener('install', function (e) { e.waitUntil(caches.open(V).then(function (c) { return c.addAll(SHELL); }).then(function () { return self.skipWaiting(); })); });
@@ -7,7 +7,19 @@ self.addEventListener('activate', function (e) {
   e.waitUntil(caches.keys().then(function (ks) { return Promise.all(ks.filter(function (k) { return k !== V; }).map(function (k) { return caches.delete(k); })); }).then(function () { return self.clients.claim(); }));
 });
 
-/* 앱 셸: 캐시 우선(백그라운드 갱신) / API: 네트워크 우선, 실패 시 캐시 */
+/* 앱 코드(html·js·css·manifest): 네트워크 우선, 3초 안에 오지 않거나 실패하면 캐시
+ *   (예전에는 캐시 우선이라 배포 직후 첫 실행에 옛 화면이 뜨고, sw.js 버전을 안 올리면 계속 옛 코드가 남을 수 있었다)
+ * 아이콘 등: 캐시 우선(백그라운드 갱신) / API: 네트워크 우선, 실패 시 캐시 */
+var CODE = /(^\/$|\.(html|js|css|webmanifest)$)/;
+function networkFirst(r) {
+  return caches.open(V).then(function (ca) {
+    var cached = function () { return ca.match(r, { ignoreSearch: true }); };
+    var net = fetch(r).then(function (res) { if (res.ok) { var c = res.clone(); ca.put(r, c).catch(function () {}); } return res; });
+    var fromNet = net.catch(function () { return cached().then(function (hit) { return hit || Response.error(); }); });
+    var slow = new Promise(function (ok) { setTimeout(ok, 3000); }).then(cached).then(function (hit) { return hit || fromNet; });
+    return Promise.race([fromNet, slow]);
+  });
+}
 self.addEventListener('fetch', function (e) {
   var r = e.request, u = new URL(r.url);
   if (r.method !== 'GET' || u.origin !== location.origin) return;
@@ -16,6 +28,7 @@ self.addEventListener('fetch', function (e) {
       e.respondWith(fetch(r).then(function (res) { var c = res.clone(); caches.open(V).then(function (ca) { ca.put(r, c); }); return res; }).catch(function () { return caches.match(r); }));
     return;
   }
+  if (r.mode === 'navigate' || CODE.test(u.pathname)) { e.respondWith(networkFirst(r)); return; }
   e.respondWith(caches.match(r, { ignoreSearch: true }).then(function (hit) {
     var net = fetch(r).then(function (res) { if (res.ok) { var c = res.clone(); caches.open(V).then(function (ca) { ca.put(r, c); }); } return res; }).catch(function () { return hit; });
     return hit || net;
