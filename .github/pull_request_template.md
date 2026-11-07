@@ -5,10 +5,10 @@
 ## 브랜치
 
 - [ ] `feature/…` · `docs/…` → `develop`
-- [ ] `release/…` → `master` (합친 뒤 태그, develop 에도 합치기)
+- [ ] `release/…` → `master` (아래 "테스트 완료 기준"까지 채우기. 합친 뒤 태그, develop 에도 합치기)
 - [ ] `hotfix/…` → `master` (합친 뒤 태그, develop 에도 합치기)
 
-## 확인
+## 확인 (develop 으로 가는 PR)
 
 - [ ] `npm test` 통과
 - [ ] 버그 수정이면 그 버그를 잡는 테스트 추가
@@ -16,5 +16,17 @@
 - [ ] 화면 문구 변경이면 `web/i18n.js` 3개 언어 모두 수정
 - [ ] 새 설정값은 `.env.example`·README 에 반영
 - [ ] `.env`·DB·키 파일이 들어가지 않음
+
+## 테스트 완료 기준 (master 로 가는 PR 만)
+
+develop 에서 확인한 사람: <!-- 이름 -->
+
+- [ ] `npm test` 전부 통과
+- [ ] `npm run crawl` 실제 수집, `/api/health` 오류 없음
+- [ ] 새 공지 몇 건을 원문과 비교해 분석 결과 확인
+- [ ] 휴대폰 홈 화면 앱으로 설정·홈·상세·저장·캘린더·학과 탭 확인
+- [ ] `scripts/test-push.js` 로 푸시 수신 확인
+- [ ] 한국어·영어·중국어 화면 확인
+- [ ] 이번에 바뀐 기능 직접 사용
 
 자세한 규칙은 [CONTRIBUTING.md](../CONTRIBUTING.md) 를 보세요.
