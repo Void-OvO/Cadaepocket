@@ -1,0 +1,23 @@
+flowchart TD
+  ST(["설정 탭"]) --> SW["푸시 알림 받기 스위치"]
+  SW --> CK{"사용 가능?"}
+  CK -- "브라우저 미지원<br/>iPhone은 홈 화면 추가 필요" --> X1["안내 토스트"]
+  CK -- "서버 VAPID 키 없음" --> X2["안내 토스트<br/>다른 설정은 미리 선택 가능"]
+  CK -- "가능" --> PM["알림 권한 요청"]
+  PM -- "거부" --> X3["브라우저 설정에서 허용 안내"]
+  PM -- "허용" --> SWR["서비스 워커 준비<br/>15초 넘으면 실패 안내"]
+  SWR --> SUB["pushManager.subscribe"]
+  SUB --> ON["스위치 켜짐 표시"]
+  ON --> API["POST /api/push/subscribe<br/>campus · lang · 분류 · 마감 시점 · 정정 여부<br/>status · done · exchange · saved"]
+  ON --> OPT["새 공지 알림 분류 선택"]
+  OPT -- "분류를 모두 끔" --> OFF["푸시도 끔 + 안내"]
+  ST --> LEAD["저장한 공지 마감 알림<br/>7 · 3 · 1일 전"]
+  ST --> CHG["저장한 공지 정정 알림 on/off"]
+  ST --> CMP["캠퍼스 · 언어 변경 → 재동기화"]
+  ST --> PROF["정보 수정 → 초기 설정"]
+  ST --> WIPE["이 기기 정보 모두 지우기"]
+  WIPE --> WP["푸시 구독 해제<br/>POST /api/push/unsubscribe · 서버 구독 삭제<br/>5초 안에 응답 없으면 건너뜀"]
+  WP --> WD["기기 정보 삭제 → 초기 설정"]
+  RE(["앱 다시 열기"]) --> ENS{"푸시 켜둠인데 구독이 끊김?"}
+  ENS -- "권한 있음" --> SUB
+  ENS -- "권한 없음" --> OFF2["스위치 끈 상태로 표시"]

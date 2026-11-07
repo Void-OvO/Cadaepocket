@@ -1,0 +1,143 @@
+erDiagram
+  campus ||--o{ notice_source : "게시판"
+  campus ||--o{ notice : "공지"
+  campus ||--o{ push_subscription : "구독"
+  notice_source ||--o{ notice : "처음 수집"
+  notice_source ||..o{ notice_board : "source_key"
+  notice ||--o{ notice_board : "게시된 게시판"
+  notice ||--o{ notice_attachment : "첨부"
+  notice ||--o{ notice_version : "버전"
+  notice ||--o{ notice_analysis : "버전별 분석"
+  notice_analysis ||--o{ notice_translation : "번역"
+  notice ||--o{ notice_change : "정정 이력"
+  notice ||--o{ error_report : "오류 신고"
+  push_subscription ||..o{ push_log : "subscription_id"
+  notice ||..o{ push_log : "notice_id"
+
+  campus {
+    TEXT id PK "sim | ui"
+    TEXT name
+    TEXT site_host
+  }
+  notice_source {
+    INTEGER id PK
+    TEXT key UK "예 sim-aca, dept-psychology"
+    TEXT campus_id FK
+    TEXT board
+    TEXT url
+    TEXT scope "campus | dept (추가)"
+    INTEGER crawl_interval_min
+    INTEGER active
+    TEXT last_crawled_at
+    TEXT last_error
+  }
+  notice {
+    INTEGER id PK
+    INTEGER source_id FK
+    TEXT campus_id FK "UK(campus_id, external_no)"
+    INTEGER external_no
+    TEXT category "aca sch gen job evt"
+    INTEGER is_pinned
+    TEXT title
+    TEXT dept
+    TEXT posted_at
+    TEXT original_url
+    TEXT body_text
+    TEXT content_hash
+    INTEGER latest_version
+    TEXT scope "campus | dept (추가)"
+    TEXT checked_at "원문 확인 시각 (추가)"
+    TEXT first_seen_at
+    TEXT updated_at
+    INTEGER deleted
+  }
+  notice_board {
+    INTEGER notice_id PK,FK
+    TEXT source_key PK
+    INTEGER pinned "게시판별 고정글"
+    INTEGER pin_rank "고정글 순서"
+  }
+  notice_attachment {
+    INTEGER id PK
+    INTEGER notice_id FK
+    TEXT kind "file | image"
+    TEXT file_name
+    TEXT file_url
+    TEXT extracted_text "OCR 결과"
+    REAL ocr_confidence
+  }
+  notice_version {
+    INTEGER id PK
+    INTEGER notice_id FK "UK(notice_id, version_no)"
+    INTEGER version_no
+    TEXT title
+    TEXT body_text
+    TEXT content_hash
+    TEXT detected_at
+  }
+  notice_analysis {
+    INTEGER id PK
+    INTEGER notice_id FK "UK(notice_id, version_no)"
+    INTEGER version_no
+    TEXT criteria_json "자격요건, uncertain"
+    TEXT summary_json "who docs how period"
+    TEXT apply_start
+    TEXT apply_end
+    TEXT source_kind "text image attachment"
+    INTEGER ocr
+    TEXT model "Claude 또는 규칙"
+    TEXT created_at
+  }
+  notice_translation {
+    INTEGER id PK
+    INTEGER analysis_id FK "UK(analysis_id, lang)"
+    TEXT lang "en | zh"
+    TEXT title
+    TEXT summary_json
+    TEXT created_at
+  }
+  notice_change {
+    INTEGER id PK
+    INTEGER notice_id FK
+    INTEGER from_version
+    INTEGER to_version
+    TEXT changed_fields_json "field from to"
+    TEXT ai_summary
+    TEXT detected_at
+    INTEGER pushed
+  }
+  push_subscription {
+    INTEGER id PK
+    TEXT endpoint UK
+    TEXT p256dh
+    TEXT auth
+    TEXT campus_id FK
+    TEXT lang "ko en zh"
+    TEXT categories_json "[] 전체, none 끔"
+    TEXT lead_days_json "7 3 1"
+    INTEGER change_alert
+    TEXT profile_json "status done exchange (추가)"
+    TEXT saved_json "저장한 공지 id (추가)"
+    TEXT created_at "이 시각 이후 공지만 새 알림"
+    TEXT updated_at
+  }
+  push_log {
+    INTEGER id PK
+    INTEGER subscription_id
+    INTEGER notice_id
+    TEXT kind "new deadline change"
+    TEXT dedupe_key "중복 발송 방지"
+    INTEGER status
+    TEXT sent_at
+    TEXT title "추가"
+    TEXT body "추가"
+    TEXT url "추가"
+  }
+  error_report {
+    INTEGER id PK
+    INTEGER notice_id FK
+    TEXT note
+    TEXT status "open"
+    TEXT created_at
+    TEXT resolved_at
+  }
