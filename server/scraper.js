@@ -30,7 +30,8 @@ function parseList(html) {
   return { rows, total: t ? Number(t[1].replace(/,/g, '')) : null };
 }
 
-function absUrl(href, base) { try { return new URL(href, base).toString(); } catch (_) { return null; } }
+// http(s) 주소만 받는다: 게시물의 javascript:·data: 링크가 앱의 첨부파일 링크로 들어가면 누른 사람 화면에서 스크립트가 실행될 수 있다
+function absUrl(href, base) { try { const u = new URL(href, base); return u.protocol === 'http:' || u.protocol === 'https:' ? u.toString() : null; } catch (_) { return null; } }
 
 function parseDetail(html, pageUrl) {
   const titleBox = H.byClass(html, 'b-title-box');
@@ -47,7 +48,8 @@ function parseDetail(html, pageUrl) {
   const fileBox = H.byClass(html, 'b-file-box');
   if (fileBox) for (const m of fileBox.inner.matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/gi)) {
     const href = H.attr(m[0], 'href'); const name = H.oneLine(m[0]);
-    if (href && name) attachments.push({ name, url: absUrl(href, pageUrl) });
+    const url = href && absUrl(href, pageUrl);
+    if (url && name) attachments.push({ name, url });
   }
   const author = (etcText.match(/작성자\s*:?\s*(\S+)/) || [])[1] || '';
   const posted = isoDate((etcText.match(/(?:등록일|작성일)\s*:?\s*(\d{4}\.\d{2}\.\d{2})/) || [])[1]);
