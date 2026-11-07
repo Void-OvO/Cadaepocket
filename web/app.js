@@ -112,11 +112,13 @@
   function fetchNotices() {
     if (!profile.campus) return Promise.resolve();
     return api('/api/notices?campus=' + profile.campus).then(function (j) {
-      notices = j.notices; cacheAt = j.at; feedUpdatedAt = j.updatedAt || null; ui.offline = false;
+      notices = j.notices; cacheAt = j.at; feedUpdatedAt = j.updatedAt || null; ui.offline = false; ui.loadErr = false;
       try { localStorage.setItem('catolimi.notices.' + profile.campus, JSON.stringify(j)); } catch (e) {}
     }).catch(function () {
       try { var j = JSON.parse(localStorage.getItem('catolimi.notices.' + profile.campus)); if (j) { notices = j.notices; cacheAt = j.at; feedUpdatedAt = j.updatedAt || null; ui.offline = true; } } catch (e) {}
-    }).then(function () { render(); fetchDept(); });
+      // 저장해 둔 목록도 없으면 '공지 없음' 대신 '불러오지 못함 · 다시 시도'를 보여 준다
+      ui.loadErr = !notices.length;
+    }).then(function () { ui.loaded = true; render(); fetchDept(); });
   }
   /* 학과 공지: 학과 게시판 이름만 요청에 담는다 (서버는 저장하지 않음) */
   function fetchDept() {
@@ -245,7 +247,10 @@
     // 맨 끝 '마감' 탭: 마감 지난 공지만 모아 본다 (다른 탭에서는 마감 지난 공지를 빼고 보여 준다)
     var cats = ['all'].concat(c.cats, ['closed']);
     var catLabel = function (k) { return k === 'closed' ? tl('마감', 'Closed', '已截止') : I.CAT[L()][k]; };
-    var body = list.length ? list.map(function (x) { return card(x.item.n, x.m); }).join('') : ui.cat === 'closed' ?
+    var body = list.length ? list.map(function (x) { return card(x.item.n, x.m); }).join('') :
+      !notices.length && ui.loadErr ? '<div class="empty" role="alert"><p class="empty-t">' + esc(tl('공지를 불러오지 못했어요', 'Could not load notices', '无法加载通知')) + '</p><p>' +
+        esc(tl('인터넷 연결을 확인한 뒤 다시 시도해 주세요.', 'Check your internet connection and try again.', '请检查网络连接后重试。')) + '</p><button class="btn sec" data-a="retry">' + esc(tl('다시 시도', 'Try again', '重试')) + '</button></div>' :
+      !notices.length && !ui.loaded ? '<div class="empty" role="status"><p>' + esc(tl('공지를 불러오고 있어요…', 'Loading notices…', '正在加载通知…')) + '</p></div>' : ui.cat === 'closed' ?
       '<div class="empty"><p class="empty-t">' + esc(tl('마감된 공지가 없어요', 'No closed notices', '没有已截止的通知')) + '</p></div>' :
       '<div class="empty"><p class="empty-t">' + esc(t('emptyT')) + '</p><p>' + esc(t('emptyB')) + '</p><button class="btn sec" data-a="grade" data-v="all">' + esc(t('emptyBtn')) + '</button></div>';
     return bar(logo() + '<div class="bar-r">' + bell() + '<a class="me" href="#/set">' + esc(meLabel()) + '</a></div>') +
@@ -619,6 +624,7 @@
     else if (a === 'exchange') { profile.exchange = !profile.exchange; save(); render(); }
     else if (a === 'int') { profile.interests = toggle(profile.interests, v); save(); render(); }
     else if (a === 'start') { commitInputs(); save(); location.hash = '#/'; fetchNotices(); if (profile.push.on) syncPush().catch(function () {}); }
+    else if (a === 'retry') { ui.loadErr = false; ui.loaded = false; render(); fetchNotices(); }
     else if (a === 'grade') { ui.grade = v; render(); }
     else if (a === 'cat') { ui.cat = v; render(); }
     else if (a === 'top') { var sc = document.getElementById('sc'); if (sc) sc.scrollTo({ top: 0, behavior: 'smooth' }); }
