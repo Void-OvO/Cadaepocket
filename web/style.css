@@ -211,6 +211,8 @@ html,body,*{touch-action:manipulation}
 /* 마지막 업데이트 시각 (목록 머리·공지 상세) */
 .ph .upd{display:flex;align-items:center;gap:6px;color:var(--sub);font-size:12.5px;margin:0 0 10px}
 .ph .upd::before{content:'';flex:none;width:7px;height:7px;border-radius:50%;background:#2E8B57}
+.ph .upd.wait::before{background:#9AA3B2}
+.ph .upd.err::before{background:#C0392B}
 
 /* 학과 자동완성 */
 .ph .acwrap{position:relative}
