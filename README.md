@@ -13,7 +13,7 @@ npm run reanalyze           # 저장된 공지를 다시 분석 (규칙 기반�
 npm run translate           # 번역이 없는 공지만 영어·중국어로 번역 (DEEPL_API_KEY 필요)
 npm test                    # 31개 테스트
 ```
-함께 개발한다면 브랜치 전략과 커밋 규칙을 [CONTRIBUTING.md](CONTRIBUTING.md) 에서 먼저 확인하세요 (git-flow: `develop` 에서 `feature/…` 브랜치를 만들어 PR).
+함께 개발한다면 브랜치 전략과 커밋 규칙을 [CONTRIBUTING.md](CONTRIBUTING.md) 에서 먼저 확인하세요 (git-flow: 개발·테스트는 `develop`, `master` 에는 테스트를 마친 코드만).
 
 푸시를 쓰려면 `npm run vapid` 로 키를 만들어 `.env` 에 넣으세요(HTTPS 필요, localhost 는 예외).
 
