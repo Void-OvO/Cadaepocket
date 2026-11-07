@@ -259,6 +259,41 @@ test('crawlAll: 신규 저장 → 동일 내용 무시 → 변경 시 버전·�
   assert.match(row.ai_summary, /신청 마감/); assert.equal(row.to_version, 2);
   const n = store.get(db, ch[0].noticeId); assert.equal(n.end, '2026-11-27'); assert.equal(n.version, 2);
 });
+test('crawlAll: 2페이지 뒤로 밀려난 최근 글도 채운다 (첫 수집·서버 중단 후), 오래된 글·상한에서 멈춘다', async () => {
+  // 실제 누락 사례: 일반 분류 4번째 페이지로 밀려난 10/21 공지(276913)가 분류당 2페이지 제한 때문에 수집되지 않았다
+  const day = n => new Date(Date.now() - n * 86400000).toISOString().slice(0, 10).replace(/-/g, '.');
+  const st = { posts: [] };                                  // 최신 글이 앞. 일반(20) 분류에만 글이 있다
+  for (let i = 0; i < 60; i++) st.posts.push({ no: 5000 - i, date: day(i < 45 ? Math.floor(i / 3) : 40 + i) });
+  const tr = (p, pin) => `<tr class="${pin ? 'b-cate-notice' : ''}"><td>${pin ? '공지' : p.no}</td><td>일반</td><td class="b-td-title"><a class="b-title" data-article-no="${p.no}" href="#">글 ${p.no}</a></td><td>팀</td><td>${p.date}</td></tr>`;
+  const pinned = { no: 100, date: day(400) }, lists = [];
+  const f = async url => {
+    const u = new URL(url), mk = b => ({ ok: true, status: 200, text: async () => b, headers: new Headers() });
+    if (u.hostname !== 'www.catholic.ac.kr') return mk('<table></table>');
+    if (u.searchParams.get('mode') === 'list') {
+      if (u.searchParams.get('srCategoryId') !== '20') return mk('<table></table>');
+      const off = +u.searchParams.get('article.offset'); lists.push(off / 10);
+      const rows = st.posts.slice(off, off + 10);
+      return mk(rows.length ? '<table><tbody>' + tr(pinned, true) + rows.map(p => tr(p)).join('') + '</tbody></table>' : '<table></table>');   // 고정글은 페이지마다 맨 위에 반복
+    }
+    return mk('<div class="b-content-box"><p>대상: 재학생</p></div>');
+  };
+  const db = dbm.open(':memory:'), has = no => !!db.prepare('SELECT 1 FROM notice WHERE external_no=?').get(no);
+  const opt = { fetch: f, delayMs: 0, only: ['sim-notice'], maxPages: 2, pageCap: 15, backfillDays: 30, analyzer: async n => A.rulesAnalyze(n) };
+  // 첫 수집: 최근 30일 글 45건은 4번째 페이지 뒤에 있어도 모두 채우고, 오래된 글만 나오는 페이지에서 멈춘다
+  await S.crawlAll(db, opt);
+  assert.ok(st.posts.slice(0, 45).every(p => has(p.no)));
+  assert.ok(has(st.posts[35].no));                                               // 4번째 페이지(인덱스 3)의 글
+  assert.deepEqual(lists, [0, 1, 2, 3, 4, 5]);                                  // 5번째 페이지에 최근 글이 섞여 있어 6번째까지 보고, 오래된 글만 있는 6번째에서 멈춤
+  // 바뀐 게 없으면 앞쪽 2페이지만 본다
+  lists.length = 0; await S.crawlAll(db, opt); assert.deepEqual(lists, [0, 1]);
+  // 서버가 멈춘 사이 25건이 새로 올라오면 이미 아는 글이 나올 때까지 넘겨서 모두 채운다
+  st.posts = Array.from({ length: 25 }, (_, i) => ({ no: 6000 - i, date: day(0) })).concat(st.posts);
+  lists.length = 0; await S.crawlAll(db, opt);
+  assert.ok(st.posts.slice(0, 25).every(p => has(p.no))); assert.deepEqual(lists, [0, 1, 2, 3]);
+  // 상한: 새 글이 계속 나와도 pageCap 에서 멈춘다
+  const db2 = dbm.open(':memory:'); lists.length = 0;
+  await S.crawlAll(db2, Object.assign({}, opt, { pageCap: 3 })); assert.deepEqual(lists, [0, 1, 2]);
+});
 test('crawlAll: 한 게시판이 실패해도 다른 게시판은 계속', async () => {
   const db = dbm.open(':memory:');
   const f = async (url) => { if (url.includes('songeui')) throw new Error('boom'); return { ok: true, status: 200, text: async () => '<table><tbody></tbody></table>', headers: new Headers() }; };
