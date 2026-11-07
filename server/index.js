@@ -18,7 +18,13 @@ function createApp(db, opts) {
   opts = opts || {};
   let crawling = false;
   const send = (res, code, obj) => { const b = JSON.stringify(obj); res.writeHead(code, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' }); res.end(b); };
-  const readBody = req => new Promise((ok, no) => { let s = ''; req.on('data', c => { s += c; if (s.length > 20000) { no(new Error('too large')); req.destroy(); } }); req.on('end', () => { try { ok(s ? JSON.parse(s) : {}); } catch (e) { no(e); } }); });
+  // 잘못된 요청(깨진 JSON·너무 큰 본문)은 500 이 아니라 4xx 로 돌려준다. JSON 이 객체가 아니면(null·배열 등) 빈 객체로 본다
+  const httpErr = (status, msg) => Object.assign(new Error(msg), { status });
+  const readBody = req => new Promise((ok, no) => {
+    let s = '';
+    req.on('data', c => { s += c; if (s.length > 20000) { no(httpErr(413, 'too large')); req.destroy(); } });
+    req.on('end', () => { let b; try { b = s ? JSON.parse(s) : {}; } catch (e) { return no(httpErr(400, 'bad json')); } ok(b && typeof b === 'object' && !Array.isArray(b) ? b : {}); });
+  });
   const isAdmin = req => cfg.adminToken && (req.headers.authorization || '') === 'Bearer ' + cfg.adminToken;
 
   async function runCrawl() {
@@ -97,14 +103,15 @@ function createApp(db, opts) {
   }
 
   function serveStatic(req, res, url) {
-    let rel = decodeURIComponent(url.pathname); if (rel === '/') rel = '/index.html';
+    let rel; try { rel = decodeURIComponent(url.pathname); } catch (e) { res.writeHead(400); return res.end('bad request'); }
+    if (rel === '/') rel = '/index.html';
     const file = path.normalize(path.join(WEB, rel));
     if (!file.startsWith(WEB + path.sep) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) { res.writeHead(404); return res.end('not found'); }
     const ext = path.extname(file);
     res.writeHead(200, { 'content-type': MIME[ext] || 'application/octet-stream', // 앱 코드(html·js·css·manifest)는 매번 확인해 배포 직후에도 옛 화면이 남지 않게 하고, 아이콘만 오래 캐시한다
     'cache-control': ['.html', '.js', '.css', '.webmanifest'].includes(ext) ? 'no-cache' : 'public, max-age=3600',
       'service-worker-allowed': '/', 'x-content-type-options': 'nosniff' });
-    fs.createReadStream(file).pipe(res);
+    fs.createReadStream(file).on('error', e => { console.warn('[http]', e.message); res.destroy(); }).pipe(res);
   }
 
   const server = http.createServer(async (req, res) => {
@@ -113,7 +120,11 @@ function createApp(db, opts) {
       if (url.pathname.startsWith('/api/')) return await api(req, res, url);
       if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405); return res.end(); }
       serveStatic(req, res, url);
-    } catch (e) { if (!res.headersSent) send(res, e instanceof SyntaxError ? 400 : 500, { error: 'server error' }); else res.end(); console.warn('[http]', e.message); }
+    } catch (e) {
+      const code = e.status || (e instanceof SyntaxError || e instanceof URIError ? 400 : 500);
+      if (!res.headersSent) send(res, code, { error: code === 500 ? 'server error' : code === 413 ? 'too large' : 'bad request' }); else res.end();
+      console.warn('[http]', e.message);
+    }
   });
   return { server, runCrawl };
 }

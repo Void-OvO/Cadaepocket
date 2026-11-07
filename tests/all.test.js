@@ -474,6 +474,27 @@ test('API: 목록·상세·구독·신고·관리자 인증·정적 파일', asy
   server.close();
 });
 
+test('API: 잘못된 요청은 500 이 아니라 400 (깨진 주소·깨진 JSON·객체가 아닌 JSON)', async () => {
+  const db = dbm.open(':memory:'); store.seed(db);
+  const { server } = createApp(db); await new Promise(r => server.listen(0, r));
+  const base = 'http://127.0.0.1:' + server.address().port;
+  const raw = (p, body) => fetch(base + p, { method: 'POST', headers: { 'content-type': 'application/json' }, body });
+  let r = await fetch(base + '/%E0%A4%A'); assert.equal(r.status, 400);                       // 잘못된 퍼센트 인코딩
+  r = await raw('/api/reports', '{bad'); assert.equal(r.status, 400); assert.deepEqual(await r.json(), { error: 'bad request' });
+  r = await raw('/api/push/subscribe', 'null'); assert.equal(r.status, 400);                 // 예전에는 TypeError 로 500
+  r = await raw('/api/push/subscribe', '[1,2]'); assert.equal(r.status, 400);
+  r = await raw('/api/reports', 'null'); assert.equal(r.status, 404);                        // 빈 객체로 보고 '없는 공지'
+  server.close();
+});
+
+test('parseDetail: 첨부파일·이미지는 http(s) 주소만 받는다 (javascript: 링크 차단)', () => {
+  const html = '<div class="b-content-box"><img src="javascript:alert(1)"><img src="/img/a.png"></div>' +
+    '<div class="b-file-box"><a href="javascript:alert(document.cookie)">안내.hwp</a><a href="data:text/html,x">x.html</a><a href="/files/ok.pdf">신청서.pdf</a></div>';
+  const d = S.parseDetail(html, 'https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=1');
+  assert.deepEqual(d.attachments.map(a => a.url), ['https://www.catholic.ac.kr/files/ok.pdf']);
+  assert.deepEqual(d.images, ['https://www.catholic.ac.kr/img/a.png']);
+});
+
 test('이미지 공지: OCR 로 읽은 글자에서 대상·마감일을 뽑고, 읽은 글자는 첨부 행에 남긴다', async () => {
   // tesseract TSV → 줄 단위 글자 (숫자 사이 공백 정리)
   const tsv = 'level\tpage_num\tblock_num\tpar_num\tline_num\tword_num\tleft\ttop\twidth\theight\tconf\ttext\n' +
