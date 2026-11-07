@@ -13,6 +13,8 @@ npm run reanalyze           # 저장된 공지를 다시 분석 (규칙 기반�
 npm run translate           # 번역이 없는 공지만 영어·중국어로 번역 (DEEPL_API_KEY 필요)
 npm test                    # 31개 테스트
 ```
+함께 개발한다면 브랜치 전략과 커밋 규칙을 [CONTRIBUTING.md](CONTRIBUTING.md) 에서 먼저 확인하세요 (git-flow: `develop` 에서 `feature/…` 브랜치를 만들어 PR).
+
 푸시를 쓰려면 `npm run vapid` 로 키를 만들어 `.env` 에 넣으세요(HTTPS 필요, localhost 는 예외).
 
 **서버 배포**: 한국 리전 우분투 VPS 에 `.\deploy\deploy.ps1 -Server <IP> -Key <키.pem>` 한 줄로 설치·업데이트합니다 (Node 22 + systemd + Caddy 자동 HTTPS, 무료 `sslip.io` 주소). 자세한 순서는 [deploy/배포안내.md](deploy/배포안내.md).
