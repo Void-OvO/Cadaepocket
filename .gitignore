@@ -12,6 +12,7 @@ data/*.db*
 *.sqlite*
 
 # 의존성·로그
+REVISION
 node_modules/
 npm-debug.log*
 *.log

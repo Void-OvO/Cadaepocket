@@ -77,20 +77,24 @@ git push -u origin feature/saved-export
 
 기능이 develop 에 합쳐지면, develop 을 받아 **다른 기능과 합쳐진 상태 그대로** 다시 테스트합니다. 내 브랜치에서는 됐는데 다른 기능과 합치니 깨지는 경우를 여기서 잡습니다.
 
+**테스트 서버**: develop 에 머지되면 GitHub Actions 가 자동으로 테스트 서버(`https://staging.<IP>.sslip.io`, 주소는 팀에 공유)에 배포합니다. 진짜 Claude·DeepL 키와 푸시 키가 테스트 서버에만 있으니, **API 키가 없어도 테스트 서버에서 실제 분석·번역·푸시를 확인**할 수 있습니다. 배포 진행은 GitHub **Actions** 탭에서 보고, 떠 있는 커밋은 `/api/health` 의 `revision` 으로 확인합니다. (설정: [deploy/배포안내.md](deploy/배포안내.md) 4절)
+
 ```bash
 git checkout develop && git pull
-npm test
-npm run crawl
-npm start
+npm test                      # 내 PC 에서도 한 번 (키가 없어도 모두 통과)
+# 그다음 테스트 서버에서 아래 목록을 확인
 ```
 
-### 통합 테스트 (master 에 머지하기 전)
+키가 없는 PC 에서는 이렇게 동작합니다: Claude 키가 없으면 규칙 기반 분석, DeepL 키가 없으면 한국어 원문 표시, 푸시는 `npm run vapid` 로 각자 키를 만들면 localhost 에서도 됩니다. **팀원에게 받은 진짜 키를 `.env` 에 넣어 돌리지 마세요** (키가 퍼지면 폐기·재발급해야 합니다).
 
-- [ ] `npm test` 가 모두 통과한다
-- [ ] `npm run crawl` 로 실제 학교 사이트를 수집했고, `GET /api/health` 에 오류(`last_error`)가 없다
+### 통합 테스트 (master 에 머지하기 전, 테스트 서버에서)
+
+- [ ] GitHub Actions 의 테스트 서버 배포가 성공했고, `/api/health` 의 `revision` 이 지금 develop 커밋이다
+- [ ] 테스트 서버에서 수집이 돌았고(`STAGING_ADMIN_TOKEN` 으로 바로 돌릴 수 있음), `/api/health` 에 오류(`last_error`)가 없다
 - [ ] 새로 수집한 공지 몇 건을 원문과 비교해 대상·기간 분석이 맞는지 봤다
-- [ ] 휴대폰에서 홈 화면에 추가한 앱으로 초기 설정 → 홈 → 상세 → 저장 → 캘린더 → 학과 탭을 눌러 봤다
-- [ ] 푸시를 켜고 `scripts/test-push.js` 로 알림이 실제로 오는지 확인했다
+- [ ] 휴대폰에서 테스트 서버 주소를 홈 화면에 추가한 앱으로 초기 설정 → 홈 → 상세 → 저장 → 캘린더 → 학과 탭을 눌러 봤다
+- [ ] 테스트 서버 앱에서 푸시를 켜고, 수집 뒤 새 공지·저장한 공지 알림이 실제로 오는지 확인했다
+- [ ] Claude 로 분석된 공지(테스트 서버에 키가 있을 때)의 대상·기간과 영어·중국어 번역이 자연스럽다
 - [ ] 한국어·영어·중국어 화면을 한 번씩 바꿔 봤다
 - [ ] 이번에 develop 에 들어온 기능들을 모두 직접 써 봤다
 
@@ -177,6 +181,7 @@ GitHub 저장소 **Settings** 에서:
 - **General → Default branch**: `develop` 으로 바꾸면 PR 이 기본으로 develop 을 향합니다.
 - **Rules → Rulesets → New branch ruleset** 을 `master`, `develop` 에 하나씩 만듭니다: "Require a pull request before merging", "Block force pushes", "Restrict deletions". master 로 가는 PR 은 `develop` 과 `hotfix/…` 에서만 엽니다.
   - 혼자 개발하는 동안에는 자기 PR 을 스스로 승인할 수 없으니 Required approvals 를 0 으로 두거나 Bypass list 에 Repository admin 을 넣습니다.
+- **Environments → `staging`**: 테스트 서버 배포용 키를 넣습니다. Deployment branches 를 `develop` 으로만 제한합니다 (자세한 값은 [deploy/배포안내.md](deploy/배포안내.md) 4절).
 
 ## 참고: 예전 이력의 `release/…` 브랜치
 
