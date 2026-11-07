@@ -1,6 +1,6 @@
 {
   "name": "catolimi",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "가톨리미 — 성심·성의 캠퍼스별 맞춤 공지 알림 서비스 (서버 + PWA, 외부 의존성 없음)",
   "private": true,
   "engines": { "node": ">=22.13" },

@@ -21,7 +21,11 @@ module.exports = {
   webDir: path.join(root, 'web'),
   adminToken: process.env.ADMIN_TOKEN || '',
   crawlIntervalMin: Number(process.env.CRAWL_INTERVAL_MIN || 30),
-  crawlMaxPages: Number(process.env.CRAWL_MAX_PAGES || 2),     // 게시판(분류)마다 가져올 목록 페이지 수
+  crawlMaxPages: Number(process.env.CRAWL_MAX_PAGES || 2),     // 게시판(분류)마다 항상 보는 목록 페이지 수
+  // 그 뒤로는 처음 보는 최근 글이 나오는 동안 다음 페이지를 계속 본다 (첫 수집·서버가 멈췄던 동안 밀려난 글을 채움)
+  crawlBackfillDays: Number(process.env.CRAWL_BACKFILL_DAYS || 30), // 이보다 오래된 글만 나오면 더 넘기지 않는다
+  crawlPageCap: Number(process.env.CRAWL_PAGE_CAP || 15),           // 게시판(분류)마다 최대 페이지 수
+  crawlDeptPageCap: Number(process.env.CRAWL_DEPT_PAGE_CAP || 5),   // 학과 게시판마다 최대 페이지 수
   crawlDelayMs: Number(process.env.CRAWL_DELAY_MS || 700),     // 학교 서버 부담을 줄이는 요청 간격
   recheckDays: Number(process.env.RECHECK_DAYS || 14),         // 최근 N일 공지는 매번 다시 열어 정정 여부 확인
   crawlDepts: process.env.CRAWL_DEPTS !== '0',                  // 학과 게시판(약 40곳) 수집
