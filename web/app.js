@@ -665,7 +665,13 @@
         render();
       });
     }
-    else if (a === 'wipe') { try { localStorage.clear(); } catch (x) {} idbSet('profile', null); profile = JSON.parse(JSON.stringify(DEF)); notices = []; location.hash = '#/setup'; render(); }
+    else if (a === 'wipe') {
+      var wipeAll = function () { try { localStorage.clear(); } catch (x) {} idbSet('profile', null); profile = JSON.parse(JSON.stringify(DEF)); notices = []; location.hash = '#/setup'; render(); };
+      // 푸시 구독부터 끈다: 기기 정보만 지우면 서버는 계속 알림을 보내는데, 설정이 사라져 끌 방법이 없다
+      // (서비스 워커가 없거나 응답이 없으면 5초 뒤 그냥 지운다)
+      if (!('serviceWorker' in navigator) || !('PushManager' in window)) wipeAll();
+      else Promise.race([disablePush(), new Promise(function (ok) { setTimeout(ok, 5000); })]).catch(function () {}).then(wipeAll);
+    }
   });
   /* 학과 자동완성: 입력할 때 목록만 다시 채우고, 고르면 학과·단과대학을 함께 저장 */
   document.addEventListener('input', function (e) {
