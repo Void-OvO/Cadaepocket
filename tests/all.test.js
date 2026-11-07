@@ -29,6 +29,23 @@ test('match: 학적·학년·학점·학과·불확실', () => {
   assert.equal(M.match({ audience: 'exchange' }, p), 'no');
 });
 
+test('match: 학과를 입력하지 않았으면 학과 제한 공지는 대상 아님이 아니라 확인 필요', () => {
+  const p = { status: '재학', done: 4, gpa: 3.4, dept: '', exchange: false };
+  assert.equal(M.match({ depts: ['의학과'] }, p), 'maybe');
+  assert.equal(M.match({ depts: ['의학과'], statuses: ['휴학'] }, p), 'no');      // 다른 조건이 안 맞으면 여전히 대상 아님
+  assert.equal(M.match({ depts: ['의학과'] }, Object.assign({}, p, { dept: '간호학과' })), 'no');
+  assert.equal(M.match({ depts: ['의학과'] }, Object.assign({}, p, { dept: '의학과' })), 'match');
+  // 홈 '내게 해당' 탭에서 빠지지 않는다
+  const f = M.feed([{ id: 1, cat: 'aca', end: null, criteria: { depts: ['의학과'] } }], p, { grade: 'my', cat: 'all', today: TODAY });
+  assert.equal(f.length, 1); assert.equal(f[0].m, 'maybe');
+  // 상세 비교표: 학과 행은 '확인 필요'
+  const L = { rDept: '학과', noDept: '학과를 입력하지 않았어요', cantTell: '판단할 수 없어요', seeSrc: '원문', cmpNo: 'no', cmpUnk: 'unk', cmpAll: 'all' };
+  const rs = M.rows({ depts: ['의학과'] }, p, L);
+  assert.equal(rs[0].st, 'unk'); assert.equal(rs[0].mine, '학과를 입력하지 않았어요'); assert.equal(M.verdict(rs, L), 'unk');
+  // 서버의 푸시 미리 거르기(fits)는 학과 조건을 빼고 보므로 영향 없음
+  assert.equal(notify.fits({ profile_json: JSON.stringify({ status: '재학', done: 4, exchange: false }) }, { depts: ['의학과'] }), true);
+});
+
 test('parseList: 고정글·날짜 칼럼 순서 무관·총 건수', () => {
   const r = S.parseList(fx('list.html'));
   assert.equal(r.total, 1234);
