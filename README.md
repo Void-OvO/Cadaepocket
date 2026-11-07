@@ -50,7 +50,7 @@ API: `GET /api/notices?campus=sim|ui&cat=&board=` (board: 학과 게시판 키, 
 (브라우저는 알림을 띄우지 않는 푸시가 반복되면 구독을 끊을 수 있어서, 기기에서 조용히 버리는 방식은 쓰지 않습니다.)
 
 ## 꼭 알아둘 점
-- 이 개발 환경에서는 학교 사이트에 접속할 수 없어 **크롤러를 실제 사이트로 실행해 보지 못했습니다.** 파서는 사이트 구조를 직접 확인한 결과(`b-cate-notice`, `a.b-title[data-article-no]`, `.b-content-box`, `.b-file-box` 등)를 바탕으로 만든 가짜 페이지로 테스트했습니다. 첫 `npm run crawl` 결과가 비면 `server/scraper.js` 의 `parseList` 선택자를 먼저 확인하세요. 게시판 한 곳이 실패해도 다른 곳은 계속 수집하고, `GET /api/health` 에 마지막 오류가 남습니다.
+- **실제 사이트 수집 확인**: 2026-11-05~06에 실제 학교 사이트에서 수집했습니다. 성심 공지사항 85건, 성의 공지사항·의과대학·간호대학 86건, 성심 학과 게시판 528건(공지 699건, 첨부파일 582개, 본문 이미지 510장)이고, 활성 수집원 49곳 모두 오류 없이 수집됐습니다. 이때 분석은 Claude 키 없이 규칙 기반(`rules-v2`)으로 했고, 로컬 PC 에 Tesseract 가 없어 이미지 OCR 은 돌지 않았습니다. 자동 테스트는 사이트 구조(`b-cate-notice`, `a.b-title[data-article-no]`, `.b-content-box`, `.b-file-box` 등)를 본뜬 가짜 페이지로 돌립니다. 학교 사이트 구조가 바뀌어 수집 결과가 비면 `server/scraper.js` 의 `parseList` 선택자를 먼저 확인하세요. 게시판 한 곳이 실패해도 다른 곳은 계속 수집하고, `GET /api/health` 에 마지막 오류가 남습니다.
 - 공지의 영어·중국어 번역(제목·요약·대상·혜택·서류·신청 방법): `ANTHROPIC_API_KEY` 가 있으면 Claude 가 분석하면서 함께 번역하고, 없으면 `DEEPL_API_KEY`(DeepL API Free, 월 50만 자 무료)로 번역합니다. 공지 1건에 약 220자(두 언어)라 무료 한도로 충분합니다. 둘 다 없으면 한국어 원문을 "Korean/韩文" 표시와 함께 보여 줍니다. 이미 저장된 공지는 `npm run translate` 로 번역하세요. 기계 번역이라 틀릴 수 있어 상세 화면에 원문 확인 안내가 있습니다.
 - 서버 배포 시 HTTPS 필수(서비스 워커·푸시). 수집은 7백 ms 간격 + User-Agent 표기로 학교 서버 부담을 줄였지만, 운영 전 학교 정보 담당에 알리는 것을 권합니다.
 - `sim-event`, `sim-outside` 게시판은 기본 비활성(`server/sources.js`).
