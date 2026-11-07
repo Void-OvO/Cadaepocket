@@ -247,6 +247,9 @@
     // 맨 끝 '마감' 탭: 마감 지난 공지만 모아 본다 (다른 탭에서는 마감 지난 공지를 빼고 보여 준다)
     var cats = ['all'].concat(c.cats, ['closed']);
     var catLabel = function (k) { return k === 'closed' ? tl('마감', 'Closed', '已截止') : I.CAT[L()][k]; };
+    // 아직 받은 목록이 없으면(불러오는 중·실패) 머리글이 '0건 · 아직 수집 전'으로 보이지 않게 건수를 숨기고 상태를 알린다
+    var waiting = !notices.length && (ui.loadErr || !ui.loaded);
+    var upd = !waiting ? updLine(feedUpdatedAt) : ui.loadErr ? tl('서버에 연결하지 못했어요', 'Could not reach the server', '无法连接服务器') : tl('불러오는 중이에요', 'Loading…', '正在加载…');
     var body = list.length ? list.map(function (x) { return card(x.item.n, x.m); }).join('') :
       !notices.length && ui.loadErr ? '<div class="empty" role="alert"><p class="empty-t">' + esc(tl('공지를 불러오지 못했어요', 'Could not load notices', '无法加载通知')) + '</p><p>' +
         esc(tl('인터넷 연결을 확인한 뒤 다시 시도해 주세요.', 'Check your internet connection and try again.', '请检查网络连接后重试。')) + '</p><button class="btn sec" data-a="retry">' + esc(tl('다시 시도', 'Try again', '重试')) + '</button></div>' :
@@ -255,10 +258,10 @@
       '<div class="empty"><p class="empty-t">' + esc(t('emptyT')) + '</p><p>' + esc(t('emptyB')) + '</p><button class="btn sec" data-a="grade" data-v="all">' + esc(t('emptyBtn')) + '</button></div>';
     return bar(logo() + '<div class="bar-r">' + bell() + '<a class="me" href="#/set">' + esc(meLabel()) + '</a></div>') +
       // 위쪽(제목·필터)은 고정하고 아래 공지 카드 목록만 스크롤한다
-      '<div class="lhead"><h1 class="h1">' + esc(t(ui.grade === 'my' ? 'feedMy' : 'feedAll')) + ' <span class="cnt">' + list.length + (L() === 'ko' ? '건' : '') + '</span></h1>' +
+      '<div class="lhead"><h1 class="h1">' + esc(t(ui.grade === 'my' ? 'feedMy' : 'feedAll')) + (waiting ? '' : ' <span class="cnt">' + list.length + (L() === 'ko' ? '건' : '') + '</span>') + '</h1>' +
       '<p class="sub" style="margin-bottom:4px">' + esc(feedSub()) + '</p>' +
       '<p class="srcln"><span class="cmpt">' + esc(c.name[L()]) + '</span> ' + esc(c.host) + esc(t('srcFrom')) + (ui.offline ? ' · offline' : '') + '</p>' +
-      '<p class="upd">' + esc(updLine(feedUpdatedAt)) + '</p>' +
+      '<p class="upd' + (waiting ? (ui.loadErr ? ' err' : ' wait') : '') + '">' + esc(upd) + '</p>' +
       (mode ? '<p class="mode">' + esc(mode) + '</p>' : '') +
       '<div class="chips">' + grades.map(function (g) { return chip(ui.grade === g[0], g[1], 'grade', g[0]); }).join('') + '</div>' +
       '<div class="chips cats">' + cats.map(function (k) { return '<button class="ct' + (ui.cat === k ? ' on' : '') + '" data-a="cat" data-v="' + k + '">' + esc(catLabel(k)) + '</button>'; }).join('') + '</div></div>' +
@@ -375,11 +378,14 @@
     } else {
       // 서버가 준 순서 그대로 = 학과 사이트와 같은 순서 (상단 고정 '공지' 먼저, 나머지는 최신 글 번호 순)
       var list = dept.notices;
+      // 불러오는 중이거나, 실패했는데 저장해 둔 목록도 없으면 머리글에 '0건 · 아직 수집 전'을 보이지 않는다 (홈과 같은 규칙)
+      var dErr = dept.loaded && dept.offline && !list.length && !dept.updatedAt, dWait = !dept.loaded || dErr;
+      var dUpd = !dWait ? updLine(dept.updatedAt) : dErr ? tl('서버에 연결하지 못했어요', 'Could not reach the server', '无法连接服务器') : tl('불러오는 중이에요', 'Loading…', '正在加载…');
       // 위쪽(학과 이름·출처·업데이트 시각)은 고정하고 카드 목록만 스크롤
-      var fixed = '<div class="lhead line"><h1 class="h1">' + esc(tl(d.name + ' 공지', d.name + ' notices', d.name + '通知')) + ' <span class="cnt">' + list.length + (L() === 'ko' ? '건' : '') + '</span></h1>' +
+      var fixed = '<div class="lhead line"><h1 class="h1">' + esc(tl(d.name + ' 공지', d.name + ' notices', d.name + '通知')) + (dWait ? '' : ' <span class="cnt">' + list.length + (L() === 'ko' ? '건' : '') + '</span>') + '</h1>' +
         '<p class="sub" style="margin-bottom:4px">' + esc(d.full) + '</p>' +
         '<p class="srcln"><span class="cmpt">' + esc(tl('학과', 'Dept.', '院系')) + '</span> ' + esc(d.host) + esc(t('srcFrom')) + (dept.offline ? ' · offline' : '') + '</p>' +
-        '<p class="upd">' + esc(updLine(dept.updatedAt)) + '</p></div>';
+        '<p class="upd' + (dWait ? (dErr ? ' err' : ' wait') : '') + '">' + esc(dUpd) + '</p></div>';
       body = (!dept.loaded ? '<p class="loading">…</p>' : list.length ? list.map(function (n) { return card(n, null, n.boardPinned); }).join('') :
           '<div class="empty"><p class="empty-t">' + esc(tl('아직 가져온 학과 공지가 없어요', 'No department notices yet', '还没有院系通知')) + '</p><p>' +
           esc(tl('다음 수집 때 학과 게시판 공지를 가져와요.', 'They will appear after the next sync.', '下次同步后会显示。')) + '</p></div>') +
