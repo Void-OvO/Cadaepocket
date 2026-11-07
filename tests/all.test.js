@@ -452,6 +452,8 @@ test('API: 목록·상세·구독·신고·관리자 인증·정적 파일', asy
   assert.ok('updatedAt' in b); assert.ok(b.notices[0].checkedAt);
   [s] = await j('/api/notices?campus=zzz'); assert.equal(s, 400);
   [s] = await j('/api/notices?campus=sim&board=nope'); assert.equal(s, 400);
+  [s, b] = await j('/api/health'); assert.equal(s, 200);                       // 어떤 코드가 떠 있는지 (버전·서버 종류·커밋)
+  assert.equal(b.version, require('../package.json').version); assert.ok(b.env); assert.ok('revision' in b);
   [s, b] = await j('/api/notices?campus=ui&board=ui-nursing'); assert.equal(s, 200); assert.ok(Array.isArray(b.notices));
   [s, b] = await j('/api/notices?campus=ui');
   const id = b.notices[0].id; [s, b] = await j('/api/notices/' + id); assert.equal(s, 200); assert.ok(b.tx.ko.title);

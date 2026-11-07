@@ -11,13 +11,13 @@ npm run crawl               # 학교 게시판 수집 (학교 사이트에 접�
 npm start                   # http://localhost:3000  — 브라우저에서 열어 '홈 화면에 추가' 하면 앱처럼 설치됩니다
 npm run reanalyze           # 저장된 공지를 다시 분석 (규칙 기반으로 분석된 것만, --all 이면 전부, -- --images 면 이미지 글자를 아직 안 읽은 공지만)
 npm run translate           # 번역이 없는 공지만 영어·중국어로 번역 (DEEPL_API_KEY 필요)
-npm test                    # 31개 테스트
+npm test                    # 34개 테스트
 ```
 함께 개발한다면 브랜치 전략과 커밋 규칙을 [CONTRIBUTING.md](CONTRIBUTING.md) 에서 먼저 확인하세요 (기능 브랜치에서 개발·기능 테스트 → `develop` 에서 통합 테스트 → 배포 중인 `master`).
 
 푸시를 쓰려면 `npm run vapid` 로 키를 만들어 `.env` 에 넣으세요(HTTPS 필요, localhost 는 예외).
 
-**서버 배포**: 한국 리전 우분투 VPS 에 `.\deploy\deploy.ps1 -Server <IP> -Key <키.pem>` 한 줄로 설치·업데이트합니다 (Node 22 + systemd + Caddy 자동 HTTPS, 무료 `sslip.io` 주소). 자세한 순서는 [deploy/배포안내.md](deploy/배포안내.md).
+**서버 배포**: 한국 리전 우분투 VPS 에 `.\deploy\deploy.ps1 -Server <IP> -Key <키.pem>` 한 줄로 설치·업데이트합니다 (Node 22 + systemd + Caddy 자동 HTTPS, 무료 `sslip.io` 주소). 자세한 순서는 [deploy/배포안내.md](deploy/배포안내.md). `develop` 에 머지되면 GitHub Actions 가 같은 서버의 **테스트 서버**(`staging.<IP>.sslip.io`)에 자동 배포해서, API 키가 없는 개발자도 실제 분석·번역·푸시로 통합 테스트를 할 수 있습니다. 떠 있는 코드는 `GET /api/health` 의 `env`·`version`·`revision` 으로 확인합니다.
 
 **AI 분석(Claude)**: `.env` 의 `ANTHROPIC_API_KEY` 에 키를 넣으면 새로 수집되는 공지를 Claude 가 본문과 이미지(포스터)까지 읽고 분석합니다. 이미 저장된 공지는 `npm run reanalyze` 로 한 번 다시 분석하세요. 모델은 `ANTHROPIC_MODEL`(기본 `claude-sonnet-5-5`)로 바꿀 수 있고, Claude 가 실패·거절하면 그 공지는 규칙 기반으로 대신 분석합니다.
 

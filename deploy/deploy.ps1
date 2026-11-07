@@ -34,8 +34,16 @@ try {
   Write-Host '==> 1/4 코드 묶기'
   $tarball = Join-Path $tmp 'catolimi.tar.gz'
   Push-Location $root
+  # 어떤 커밋을 배포했는지 서버 /api/health 의 revision 에 남긴다 (커밋 안 한 수정이 있으면 +dirty)
+  $rev = $null
+  if (Get-Command git -ErrorAction SilentlyContinue) {
+    $sha = git rev-parse --short HEAD 2>$null; $br = git rev-parse --abbrev-ref HEAD 2>$null
+    if ($sha) { $rev = "$br@$sha"; if (git status --porcelain 2>$null) { $rev += '+dirty' } }
+  }
+  if ($rev) { [IO.File]::WriteAllText((Join-Path $root 'REVISION'), "$rev`n"); Write-Host "    배포할 코드: $rev" }
   # data/ 의 DB 파일만 뺀다 (data/seed.json 은 코드가 쓰는 시연 공지라 넣어야 함)
   tar.exe -czf $tarball --exclude=./.env --exclude='./data/*.db*' --exclude=./.git --exclude=./node_modules --exclude=./deploy/*.log .
+  Remove-Item (Join-Path $root 'REVISION') -ErrorAction SilentlyContinue
   $inTar = tar.exe -tzf $tarball
   if (-not ($inTar -contains './data/seed.json')) { throw 'data/seed.json 이 묶음에 없어요' }
   if ($inTar | Where-Object { $_ -match '\.db($|-)' -or $_ -eq './.env' }) { throw '묶음에 DB 나 .env 가 들어갔어요' }

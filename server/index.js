@@ -13,6 +13,12 @@ const { CAMPUS_CATS, CAMPUSES, SOURCES } = require('./sources');
 const WEB = path.join(__dirname, '../web');
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json', '.webmanifest': 'application/manifest+json',
   '.png': 'image/png', '.svg': 'image/svg+xml', '.ico': 'image/x-icon' };
+// 어떤 코드가 떠 있는지: 버전, 서버 종류(prod·staging), 배포한 커밋 (GitHub Actions 가 REVISION 파일에 적는다)
+const BUILD = (() => {
+  const root = path.join(__dirname, '..');
+  let revision = null; try { revision = fs.readFileSync(path.join(root, 'REVISION'), 'utf8').trim() || null; } catch (e) { /* 로컬 실행 */ }
+  return { version: require('../package.json').version, env: process.env.APP_ENV || 'local', revision };
+})();
 
 function createApp(db, opts) {
   opts = opts || {};
@@ -47,7 +53,7 @@ function createApp(db, opts) {
     const p = url.pathname, q = Object.fromEntries(url.searchParams);
     if (req.method === 'GET' && p === '/api/health') {
       const src = db.prepare('SELECT key,last_crawled_at,last_error FROM notice_source WHERE active=1').all();
-      return send(res, 200, { ok: true, notices: db.prepare('SELECT COUNT(*) c FROM notice').get().c, sources: src });
+      return send(res, 200, { ok: true, ...BUILD, notices: db.prepare('SELECT COUNT(*) c FROM notice').get().c, sources: src });
     }
     if (req.method === 'GET' && p === '/api/config')
       return send(res, 200, { vapidPublicKey: push.enabled() ? cfg.vapidPublic : null, campuses: Object.values(CAMPUSES).map(c => ({ id: c.id, name: c.name, host: c.host, cats: CAMPUS_CATS[c.id] })) });
