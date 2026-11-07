@@ -165,11 +165,11 @@
 
   /* ───────── 뷰: 초기 설정 ───────── */
   var OS = {
-    ko: { title: '내게 맞는 공지만 골라 드릴게요', sub: '아래 정보로 해당되는 공지를 골라요. 입력한 정보는 이 기기에만 저장돼요.', lCampus: '캠퍼스', hCampus: '캠퍼스마다 공지가 올라오는 게시판이 달라요. 선택한 캠퍼스의 공지만 가져와요.', lLang: '언어', lStatus: '학적 상태', lDept: '학과(부)', lDone: '이수 완료한 학기', hDone: '휴학한 학기는 빼고, 실제로 다닌 학기만 세어 주세요.', lGpa: '평균 학점', hGpa: '4.5 만점 기준이에요.', lExc: '교환·외국인 학생이에요', lInt: '관심 영역 (선택)', hInt: '관심 영역의 공지는 더 위에 보여드려요.', priv: '학과·학점은 서버에 저장하지 않아요. 학과 공지를 불러올 때만 그 학과 게시판 이름을 요청에 담아요. 푸시를 켜면 알림을 고르려고 학적·이수 학기·교환 여부와 저장한 공지 번호만 보내요. AI에는 공지 본문만 전달해요.', cta: '시작하기',
+    ko: { title: '내게 맞는 공지만 골라 드릴게요', sub: '아래 정보로 해당되는 공지를 골라요. 입력한 정보는 이 기기에만 저장돼요.', lCampus: '캠퍼스', hCampus: '캠퍼스마다 공지가 올라오는 게시판이 달라요. 선택한 캠퍼스의 공지만 가져와요.', lLang: '언어', lStatus: '학적 상태', lDept: '학과(부)', lDone: '이수 완료한 학기', hDone: '휴학한 학기는 빼고, 실제로 다닌 학기만 세어 주세요.', lGpa: '평균 학점', hGpa: '4.5 만점 기준이에요.', lExc: '교환·외국인 학생이에요', lInt: '관심 영역 (선택)', hInt: '관심 영역의 공지는 더 위에 보여드려요.', priv: '학과·학점은 서버에 저장하지 않아요. 학과 공지를 불러올 때만 그 학과 게시판 이름을 요청에 담아요. 푸시를 켜면 알림을 고르려고 학적·이수 학기·교환 여부와 저장한 공지 번호만 보내요. AI에는 공지 본문만 전달해요.', cta: '시작하기', gpaFix: '평균 학점은 0.0~4.5 사이예요. 4.5 만점에 맞춰 고쳤어요.', gpaBad: '숫자로 입력해 주세요 (예: 3.5). 이전 값을 그대로 뒀어요.',
       hDept: '학과 이름을 입력하면 목록이 나와요. 목록에서 고르면 단과대학도 함께 저장되고 학과 공지를 볼 수 있어요.', college: '단과대학', notListed: '목록에 없는 학과예요. 학과 공지는 목록에서 고른 학과만 볼 수 있어요.', noMatch: '일치하는 학과가 없어요' },
-    en: { title: 'Only the notices that apply to you', sub: 'We use this to pick matching notices. Your details stay on this device.', lCampus: 'Campus', hCampus: 'Each campus posts on its own board. We only sync your campus.', lLang: 'Language', lStatus: 'Status', lDept: 'Department', lDone: 'Semesters completed', hDone: 'Do not count semesters you were on leave.', lGpa: 'GPA', hGpa: 'On a 4.5 scale.', lExc: 'I am an exchange / international student', lInt: 'Interests (optional)', hInt: 'Notices in these areas appear higher.', priv: 'Your department and GPA are not stored on a server. Only when loading department notices is the department board name sent in the request. With push on, only your status, semesters, exchange flag and saved notice IDs are sent to pick alerts. Only notice text goes to the AI.', cta: 'Get started',
+    en: { title: 'Only the notices that apply to you', sub: 'We use this to pick matching notices. Your details stay on this device.', lCampus: 'Campus', hCampus: 'Each campus posts on its own board. We only sync your campus.', lLang: 'Language', lStatus: 'Status', lDept: 'Department', lDone: 'Semesters completed', hDone: 'Do not count semesters you were on leave.', lGpa: 'GPA', hGpa: 'On a 4.5 scale.', lExc: 'I am an exchange / international student', lInt: 'Interests (optional)', hInt: 'Notices in these areas appear higher.', priv: 'Your department and GPA are not stored on a server. Only when loading department notices is the department board name sent in the request. With push on, only your status, semesters, exchange flag and saved notice IDs are sent to pick alerts. Only notice text goes to the AI.', cta: 'Get started', gpaFix: 'GPA must be between 0.0 and 4.5, so we adjusted it.', gpaBad: 'Please enter a number (e.g. 3.5). We kept the previous value.',
       hDept: 'Start typing to see matching departments. Pick one to save its college and see department notices.', college: 'College', notListed: 'This department is not in the list, so department notices are not available.', noMatch: 'No matching department' },
-    zh: { title: '只为您挑选相关通知', sub: '我们根据以下信息筛选通知。您输入的信息只保存在本设备上。', lCampus: '校区', hCampus: '各校区的公告发布在不同的网站。我们只同步所选校区的公告。', lLang: '语言', lStatus: '学籍状态', lDept: '院系', lDone: '已完成学期数', hDone: '休学的学期不计入。', lGpa: '平均绩点', hGpa: '满分4.5。', lExc: '我是交换生/留学生', lInt: '关注领域（选填）', hInt: '关注领域的通知会显示在更靠前的位置。', priv: '院系和绩点不会保存在服务器上。只有加载院系通知时，请求中才会包含该院系公告栏名称。开启推送时，仅发送学籍、学期数、交换生标记和收藏的通知编号用于筛选提醒。只有通知正文会交给AI。', cta: '开始使用',
+    zh: { title: '只为您挑选相关通知', sub: '我们根据以下信息筛选通知。您输入的信息只保存在本设备上。', lCampus: '校区', hCampus: '各校区的公告发布在不同的网站。我们只同步所选校区的公告。', lLang: '语言', lStatus: '学籍状态', lDept: '院系', lDone: '已完成学期数', hDone: '休学的学期不计入。', lGpa: '平均绩点', hGpa: '满分4.5。', lExc: '我是交换生/留学生', lInt: '关注领域（选填）', hInt: '关注领域的通知会显示在更靠前的位置。', priv: '院系和绩点不会保存在服务器上。只有加载院系通知时，请求中才会包含该院系公告栏名称。开启推送时，仅发送学籍、学期数、交换生标记和收藏的通知编号用于筛选提醒。只有通知正文会交给AI。', cta: '开始使用', gpaFix: '绩点应在0.0~4.5之间，已为您调整。', gpaBad: '请输入数字（例：3.5）。已保留之前的数值。',
       hDept: '输入院系名称即可显示列表。从列表中选择后会同时保存所属学院，并可查看院系通知。', college: '学院', notListed: '列表中没有该院系，无法查看院系通知。', noMatch: '没有匹配的院系' }
   };
   function chip(on, label, act, val) { return '<button class="chip' + (on ? ' on' : '') + '" aria-pressed="' + on + '" data-a="' + act + '" data-v="' + esc(val) + '">' + esc(label) + '</button>'; }
@@ -191,16 +191,19 @@
         nextTerms().concat(['tbd']).map(function (v) { return chip(p.returnTerm === v, termName(v), 'rterm', v); }).join('') + '</div></div>' : '') +
       deptField(o) +
       '<div class="fld"><span class="lab">' + esc(o.lDone) + '</span><p class="hint">' + esc(o.hDone) + '</p><div class="grid5">' + sems + '</div><p class="cur">' + esc(semText(p.done, p.status)) + '</p></div>' +
-      '<div class="fld"><label class="lab" for="gpa">' + esc(o.lGpa) + '</label><p class="hint">' + esc(o.hGpa) + '</p><input id="gpa" class="in" type="text" inputmode="decimal" value="' + esc(p.gpa.toFixed(1)) + '" data-in="gpa"></div>' +
+      '<div class="fld"><label class="lab" for="gpa">' + esc(o.lGpa) + '</label><p class="hint">' + esc(o.hGpa) + '</p><input id="gpa" class="in" type="text" inputmode="decimal" value="' + esc(p.gpa.toFixed(1)) + '" data-in="gpa" aria-describedby="gpainfo"><p class="hint" id="gpainfo" role="status" style="margin-top:8px" hidden></p></div>' +
       '<div class="fld">' + chip(p.exchange, o.lExc, 'exchange', '') + '</div>' +
       (c ? '<div class="fld"><span class="lab">' + esc(o.lInt) + '</span><p class="hint">' + esc(o.hInt) + '</p><div class="wrap">' + ints + '</div></div>' : '') +
       '<p class="priv">' + esc(o.priv) + '</p></div><div class="cta"><button class="btn" data-a="start"' + (c ? '' : ' disabled style="opacity:.5"') + '>' + esc(o.cta) + '</button></div>';
   }
   /* 학과 입력 + 자동완성 목록. 목록은 입력할 때마다 acList() 가 다시 채운다(전체를 다시 그리면 입력이 끊기므로) */
+  function deptInfoHtml(o) {
+    var d = myDept();
+    return d ? '<p class="cur" id="deptinfo">' + esc(o.college + ' · ' + d.full) + '</p>'
+      : (profile.dept ? '<p class="hint" id="deptinfo" style="margin-top:8px">' + esc(o.notListed) + '</p>' : '<p id="deptinfo"></p>');
+  }
   function deptField(o) {
-    var p = profile, d = myDept();
-    var info = d ? '<p class="cur" id="deptinfo">' + esc(o.college + ' · ' + d.full) + '</p>'
-      : (p.dept ? '<p class="hint" id="deptinfo" style="margin-top:8px">' + esc(o.notListed) + '</p>' : '<p id="deptinfo"></p>');
+    var p = profile, info = deptInfoHtml(o);
     return '<div class="fld acwrap"><label class="lab" for="dept">' + esc(o.lDept) + '</label><p class="hint">' + esc(o.hDept) + '</p>' +
       '<input id="dept" class="in" type="text" value="' + esc(p.dept) + '" data-in="dept" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="acl">' +
       '<ul class="ac" id="acl" role="listbox" hidden></ul>' + info + '</div>';
@@ -264,7 +267,7 @@
     var sem = l === 'ko' ? '학기' : l === 'zh' ? '学期' : ' sem.';
     return { lang: l, rStatus: t('rStatus'), allStatus: l === 'ko' ? '전체 학적' : l === 'zh' ? '全部学籍' : 'All statuses', statusName: function (s) { return I.STAT[l][s]; },
       rDept: t('rDept'), rGrade: t('rGrade'), rDone: t('rDone'), rGpa: t('rGpa'), rAud: t('rAud'), audX: t('audX'), audXme: t('audXme'), audNo: t('audNo'),
-      seeSrc: t('seeSrc'), cantTell: t('cantTell'), gpaNeed: t('gpaNeed'), cmpNo: t('cmpNo'), cmpUnk: t('cmpUnk'), cmpAll: t('cmpAll'),
+      seeSrc: t('seeSrc'), cantTell: t('cantTell'), noDept: l === 'ko' ? '학과를 입력하지 않았어요' : l === 'zh' ? '未填写院系' : 'Department not set', gpaNeed: t('gpaNeed'), cmpNo: t('cmpNo'), cmpUnk: t('cmpUnk'), cmpAll: t('cmpAll'),
       gradeNeed: function (g) { return l === 'ko' ? g.join('·') + '학년' : l === 'zh' ? g.join('·') + '年级' : 'Year ' + (g.length > 1 ? g[0] + '–' + g[g.length - 1] : g[0]); },
       gradeMine: function (p, g) { var ret = p.status === '휴학' || p.status === '복학 예정'; return l === 'ko' ? (ret ? '복학 후 ' : '') + g + '학년' : l === 'zh' ? (ret ? '复学后' : '') + g + '年级' : 'Year ' + g + (ret ? ' after returning' : ''); },
       doneNeed: function (a, b) { return a != null && b != null ? a + '~' + b + sem : a != null ? a + (l === 'ko' ? '학기 이상' : l === 'zh' ? '学期以上' : '+ sem.') : '~' + b + sem; },
@@ -615,7 +618,7 @@
     else if (a === 'done') { profile.done = +v; save(); render(); }
     else if (a === 'exchange') { profile.exchange = !profile.exchange; save(); render(); }
     else if (a === 'int') { profile.interests = toggle(profile.interests, v); save(); render(); }
-    else if (a === 'start') { save(); location.hash = '#/'; fetchNotices(); if (profile.push.on) syncPush().catch(function () {}); }
+    else if (a === 'start') { commitInputs(); save(); location.hash = '#/'; fetchNotices(); if (profile.push.on) syncPush().catch(function () {}); }
     else if (a === 'grade') { ui.grade = v; render(); }
     else if (a === 'cat') { ui.cat = v; render(); }
     else if (a === 'top') { var sc = document.getElementById('sc'); if (sc) sc.scrollTo({ top: 0, behavior: 'smooth' }); }
@@ -682,15 +685,35 @@
     var li = e.target.closest && e.target.closest('[data-pick]'); if (!li) return;
     e.preventDefault(); pickDept(li.getAttribute('data-pick'));
   });
+  /* 입력칸 값을 프로필에 반영하고, 화면은 바뀐 부분(입력칸·안내 문구)만 고친다 */
+  function commitInput(el) {
+    var k = el.getAttribute('data-in'), o = OS[L()];
+    if (k === 'dept') {
+      var d = DEP.find(el.value, profile.campus), name = d ? d.name : el.value.trim();
+      if (name !== profile.dept || (d ? d.full : '') !== profile.college) {
+        profile.dept = name; profile.college = d ? d.full : ''; fetchDept();
+      }
+      var di = document.getElementById('deptinfo'); if (di) di.outerHTML = deptInfoHtml(o);
+      var ul = document.getElementById('acl'); if (ul) { ul.hidden = true; ul.innerHTML = ''; }
+      el.setAttribute('aria-expanded', 'false'); el.removeAttribute('aria-activedescendant'); ui.ac = -1;
+    }
+    if (k === 'gpa') {
+      var raw = el.value.trim(), g = parseFloat(raw), msg = '';
+      if (!raw || !isFinite(g)) msg = o.gpaBad;
+      else { var cg = Math.round(Math.max(0, Math.min(4.5, g)) * 100) / 100; if (cg !== g) msg = o.gpaFix; profile.gpa = cg; }
+      el.value = profile.gpa.toFixed(1);
+      var gi = document.getElementById('gpainfo'); if (gi) { gi.textContent = msg; gi.hidden = !msg; }
+    }
+    save();
+  }
+  /* '시작하기' 를 누를 때 아직 반영되지 않은 입력값도 함께 반영한다 (iOS 는 버튼을 눌러도 입력칸의 change 가 먼저 오지 않을 수 있다) */
+  function commitInputs() { Array.prototype.forEach.call(document.querySelectorAll('[data-in]'), commitInput); }
+  // 초기 설정 화면은 입력칸에서 포커스가 빠져도 전체를 다시 그리지 않는다:
+  // 다시 그리면 입력 후 바로 누른 버튼(시작하기 등)이 새로 만들어져 첫 탭이 무시됐다
   document.addEventListener('change', function (e) {
     var k = e.target.getAttribute && e.target.getAttribute('data-in'); if (!k) return;
-    if (k === 'dept') {
-      var d = DEP.find(e.target.value, profile.campus);
-      profile.dept = d ? d.name : e.target.value.trim(); profile.college = d ? d.full : '';
-      fetchDept();
-    }
-    if (k === 'gpa') { var g = parseFloat(e.target.value); if (isFinite(g)) profile.gpa = Math.max(0, Math.min(4.5, g)); }
-    save(); render();
+    commitInput(e.target);
+    if (route() !== '/setup') render();
   });
   window.addEventListener('hashchange', render);
 

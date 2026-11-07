@@ -40,12 +40,14 @@
     if (c.audience === 'exchange' && !p.exchange) return 'no';
     if (c.excludeExchange && p.exchange) return 'no';
     if (c.statuses && c.statuses.length && c.statuses.indexOf(p.status) < 0) return 'no';
-    if (c.depts && c.depts.length && c.depts.indexOf(p.dept) < 0) return 'no';
+    // 학과를 입력하지 않았으면 학과 조건은 '대상 아님'이 아니라 '확인 필요'로 본다 (예전에는 홈에서 조용히 빠졌다)
+    var deptUnknown = !!(c.depts && c.depts.length && !p.dept);
+    if (c.depts && c.depts.length && p.dept && c.depts.indexOf(p.dept) < 0) return 'no';
     if (c.grades && c.grades.length && c.grades.indexOf(grade) < 0) return 'no';
     if (c.minDone != null && p.done < c.minDone) return 'no';
     if (c.maxDone != null && p.done > c.maxDone) return 'no';
     if (c.minGpa != null && p.gpa < c.minGpa) return 'no';
-    if (activeUncertain(c, p).length) return 'maybe';
+    if (deptUnknown || activeUncertain(c, p).length) return 'maybe';
     return 'match';
   }
 
@@ -106,7 +108,7 @@
       out.push(mk(c.statuses.indexOf(p.status) > -1 ? 'ok' : 'no', L.rStatus,
         c.statuses.length >= 3 ? L.allStatus : c.statuses.map(L.statusName).join(' · '), L.statusName(p.status)));
     }
-    if (c.depts && c.depts.length) out.push(mk(c.depts.indexOf(p.dept) > -1 ? 'ok' : 'no', L.rDept, c.depts.join(' · '), p.dept));
+    if (c.depts && c.depts.length) out.push(mk(!p.dept ? 'unk' : c.depts.indexOf(p.dept) > -1 ? 'ok' : 'no', L.rDept, c.depts.join(' · '), p.dept || L.noDept || L.cantTell));
     if (c.grades && c.grades.length) {
       out.push(mk(c.grades.indexOf(grade) > -1 ? 'ok' : 'no', L.rGrade, L.gradeNeed(c.grades), L.gradeMine(p, grade)));
     }
