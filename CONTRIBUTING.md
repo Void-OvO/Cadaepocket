@@ -20,7 +20,8 @@ feature/<기능>  ──①기능 테스트──▶  develop  ──②통합 �
 ```bash
 git clone https://github.com/Void-OvO/Catholic.git
 cd Catholic
-git checkout develop          # 기능 브랜치는 항상 develop 에서 만든다
+git checkout develop          # 개발은 develop 에서 (GitHub 기본 브랜치도 develop)
+git config core.hooksPath .githooks   # master 에 직접 커밋·push 하는 실수를 막는 훅 켜기
 cp .env.example .env          # 키는 각자 발급해서 채운다 (팀원에게 받은 키를 커밋하지 말 것)
 npm test                      # Node 22.13 이상. 외부 npm 패키지는 없다
 npm start                     # http://localhost:3000
@@ -115,6 +116,8 @@ npm start
    git push origin v1.2.0
    ```
 4. master 를 서버에 배포합니다 (`deploy/deploy.ps1`). **배포는 master 에서만 합니다.**
+
+GitHub PR 대신 로컬에서 `git merge --no-ff develop` 으로 master 에 합쳤다면, `.githooks/pre-push` 가 master push 를 한 번 막습니다. 통합 테스트를 마친 게 맞으면 `ALLOW_MASTER_PUSH=1` 을 붙여 push 하세요 (PowerShell: `$env:ALLOW_MASTER_PUSH=1; git push origin master; Remove-Item Env:ALLOW_MASTER_PUSH`).
 
 ## 6. 예외: 배포 중 급한 장애 (hotfix)
 
