@@ -18,8 +18,8 @@ feature/<기능>  ──①기능 테스트──▶  develop  ──②통합 �
 ## 1. 처음 받기
 
 ```bash
-git clone https://github.com/Void-OvO/Catholic.git
-cd Catholic
+git clone https://github.com/Void-OvO/cadaepocket.git
+cd cadaepocket
 git checkout develop          # 개발은 develop 에서 (GitHub 기본 브랜치도 develop)
 git config core.hooksPath .githooks   # master 에 직접 커밋·push 하는 실수를 막는 훅 켜기
 cp .env.example .env          # 키는 각자 발급해서 채운다 (팀원에게 받은 키를 커밋하지 말 것)
