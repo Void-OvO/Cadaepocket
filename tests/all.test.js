@@ -562,14 +562,3 @@ test('알림 모아 보기: 이 기기 구독으로 보낸 알림만 최신 순�
   assert.equal((await fetch(base + '/api/push/history', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{"endpoint":"x"}' })).status, 404);
   app.close();
 });
-test('이름 변경: 새 cadaepocket.db 가 없으면 같은 폴더의 예전 catolimi.db 를 이름만 바꿔 그대로 쓴다', () => {
-  const dir = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'rename-'));
-  const old = dbm.open(path.join(dir, 'catolimi.db'));
-  old.exec("CREATE TABLE keep_me (note TEXT); INSERT INTO keep_me VALUES ('예전 데이터')");
-  old.close();
-  const db = dbm.open(path.join(dir, 'cadaepocket.db'));
-  assert.equal(db.prepare('SELECT note FROM keep_me').get().note, '예전 데이터');
-  db.close();
-  assert.equal(fs.existsSync(path.join(dir, 'catolimi.db')), false);
-  fs.rmSync(dir, { recursive: true, force: true });
-});

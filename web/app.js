@@ -17,21 +17,7 @@
   var dept = { board: null, notices: [], updatedAt: null, loaded: false, offline: false };   // 학과 탭 공지
   var extra = {};                                                  // 목록에 없는 공지(예: 다른 탭에서 연 공지)를 id 로 보관
 
-  // 앱 이름이 가톨리미(catolimi)에서 가대포켓(cadaepocket)으로 바뀌었다: 예전 이름으로 저장된 기기 데이터를 새 이름으로 옮긴다
-  function migrateOldName() {
-    try {
-      var old = [];
-      for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k && k.indexOf('catolimi.') === 0) old.push(k); }
-      old.forEach(function (k) {
-        var nk = 'cadaepocket.' + k.slice(9);
-        if (localStorage.getItem(nk) === null) localStorage.setItem(nk, localStorage.getItem(k));
-        localStorage.removeItem(k);
-      });
-    } catch (e) {}
-    try { if (indexedDB.deleteDatabase) indexedDB.deleteDatabase('catolimi'); } catch (e) {}
-  }
   function load() {
-    migrateOldName();
     try {
       var s = JSON.parse(localStorage.getItem('cadaepocket.profile'));
       if (s) {

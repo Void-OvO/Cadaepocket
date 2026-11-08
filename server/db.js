@@ -135,17 +135,9 @@ CREATE TABLE IF NOT EXISTS error_report (
 );
 `;
 
-// 앱 이름이 가톨리미에서 가대포켓으로 바뀌었다: 새 DB 파일이 없고 같은 폴더에 예전 catolimi.db 가 있으면 이름을 바꿔 그대로 쓴다
-function renameOldDb(file) {
-  if (path.basename(file) !== 'cadaepocket.db' || fs.existsSync(file)) return;
-  const old = path.join(path.dirname(file), 'catolimi.db');
-  if (!fs.existsSync(old)) return;
-  for (const ext of ['', '-wal', '-shm']) if (fs.existsSync(old + ext)) fs.renameSync(old + ext, file + ext);
-}
-
 function open(file) {
   file = file || cfg.dbFile;
-  if (file !== ':memory:') { fs.mkdirSync(path.dirname(file), { recursive: true }); renameOldDb(file); }
+  if (file !== ':memory:') fs.mkdirSync(path.dirname(file), { recursive: true });
   const db = new DatabaseSync(file);
   db.exec(SCHEMA);
   // 예전 DB 에는 profile_json 칸이 없다

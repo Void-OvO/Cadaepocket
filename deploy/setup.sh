@@ -67,22 +67,7 @@ if ! command -v caddy >/dev/null 2>&1; then
 fi
 
 # ── 3. 앱 사용자·코드 ──
-# 앱 이름이 가톨리미(catolimi)에서 가대포켓(cadaepocket)으로 바뀌었다: 예전 설치가 있으면 .env·DB 를 그대로 옮긴다
-OLD_APP=/opt/catolimi
-if [ -d "$OLD_APP" ] && [ ! -d "$APP" ]; then
-  log "예전 이름(catolimi) 설치를 $APP 로 옮기기"
-  systemctl stop catolimi catolimi-ocr 2>/dev/null || true
-  systemctl disable catolimi >/dev/null 2>&1 || true
-  rm -f /etc/systemd/system/catolimi.service
-  systemctl daemon-reload
-  mv "$OLD_APP" "$APP"
-  for ext in '' -wal -shm; do
-    [ -f "$APP/data/catolimi.db$ext" ] && mv "$APP/data/catolimi.db$ext" "$APP/data/cadaepocket.db$ext"
-  done
-  [ -f "$APP/.env" ] && sed -i 's|^CRAWL_USER_AGENT=CatolimiBot/|CRAWL_USER_AGENT=CadaePocketBot/|; s|data/catolimi\.db|data/cadaepocket.db|' "$APP/.env"
-fi
 id -u cadaepocket >/dev/null 2>&1 || useradd --system --home "$APP" --shell /usr/sbin/nologin cadaepocket
-id -u catolimi >/dev/null 2>&1 && userdel catolimi 2>/dev/null || true
 mkdir -p "$APP/data"
 log "앱 코드 풀기 → $APP"
 # 예전 코드 중 .env 와 data/ 를 뺀 나머지를 지우고 새로 푼다
