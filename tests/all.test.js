@@ -29,6 +29,23 @@ test('match: 학적·학년·학점·학과·불확실', () => {
   assert.equal(M.match({ audience: 'exchange' }, p), 'no');
 });
 
+test('match: 학과를 입력하지 않았으면 학과 제한 공지는 대상 아님이 아니라 확인 필요', () => {
+  const p = { status: '재학', done: 4, gpa: 3.4, dept: '', exchange: false };
+  assert.equal(M.match({ depts: ['의학과'] }, p), 'maybe');
+  assert.equal(M.match({ depts: ['의학과'], statuses: ['휴학'] }, p), 'no');      // 다른 조건이 안 맞으면 여전히 대상 아님
+  assert.equal(M.match({ depts: ['의학과'] }, Object.assign({}, p, { dept: '간호학과' })), 'no');
+  assert.equal(M.match({ depts: ['의학과'] }, Object.assign({}, p, { dept: '의학과' })), 'match');
+  // 홈 '내게 해당' 탭에서 빠지지 않는다
+  const f = M.feed([{ id: 1, cat: 'aca', end: null, criteria: { depts: ['의학과'] } }], p, { grade: 'my', cat: 'all', today: TODAY });
+  assert.equal(f.length, 1); assert.equal(f[0].m, 'maybe');
+  // 상세 비교표: 학과 행은 '확인 필요'
+  const L = { rDept: '학과', noDept: '학과를 입력하지 않았어요', cantTell: '판단할 수 없어요', seeSrc: '원문', cmpNo: 'no', cmpUnk: 'unk', cmpAll: 'all' };
+  const rs = M.rows({ depts: ['의학과'] }, p, L);
+  assert.equal(rs[0].st, 'unk'); assert.equal(rs[0].mine, '학과를 입력하지 않았어요'); assert.equal(M.verdict(rs, L), 'unk');
+  // 서버의 푸시 미리 거르기(fits)는 학과 조건을 빼고 보므로 영향 없음
+  assert.equal(notify.fits({ profile_json: JSON.stringify({ status: '재학', done: 4, exchange: false }) }, { depts: ['의학과'] }), true);
+});
+
 test('parseList: 고정글·날짜 칼럼 순서 무관·총 건수', () => {
   const r = S.parseList(fx('list.html'));
   assert.equal(r.total, 1234);
@@ -210,8 +227,8 @@ test('push: RFC 8291 암호화 → 복호화 왕복', () => {
   const j = ua.publicKey.export({ format: 'jwk' });
   const raw = Buffer.concat([Buffer.from([4]), Buffer.from(j.x, 'base64url'), Buffer.from(j.y, 'base64url')]);
   const auth = crypto.randomBytes(16).toString('base64url');
-  const body = P.encrypt('{"hi":"가톨리미"}', raw.toString('base64url'), auth);
-  assert.equal(P.decrypt(body, ua.privateKey, raw, auth), '{"hi":"가톨리미"}');
+  const body = P.encrypt('{"hi":"가대포켓"}', raw.toString('base64url'), auth);
+  assert.equal(P.decrypt(body, ua.privateKey, raw, auth), '{"hi":"가대포켓"}');
 });
 test('push: RFC 8291 부록 A 시험 벡터', () => {
   const b = s => Buffer.from(s, 'base64url');
@@ -435,6 +452,8 @@ test('API: 목록·상세·구독·신고·관리자 인증·정적 파일', asy
   assert.ok('updatedAt' in b); assert.ok(b.notices[0].checkedAt);
   [s] = await j('/api/notices?campus=zzz'); assert.equal(s, 400);
   [s] = await j('/api/notices?campus=sim&board=nope'); assert.equal(s, 400);
+  [s, b] = await j('/api/health'); assert.equal(s, 200);                       // 어떤 코드가 떠 있는지 (버전·서버 종류·커밋)
+  assert.equal(b.version, require('../package.json').version); assert.ok(b.env); assert.ok('revision' in b);
   [s, b] = await j('/api/notices?campus=ui&board=ui-nursing'); assert.equal(s, 200); assert.ok(Array.isArray(b.notices));
   [s, b] = await j('/api/notices?campus=ui');
   const id = b.notices[0].id; [s, b] = await j('/api/notices/' + id); assert.equal(s, 200); assert.ok(b.tx.ko.title);
@@ -455,6 +474,27 @@ test('API: 목록·상세·구독·신고·관리자 인증·정적 파일', asy
   r = await fetch(base + '/sw.js'); assert.equal(r.status, 200);
   r = await fetch(base + '/..%2f..%2fpackage.json'); assert.equal(r.status, 404);
   server.close();
+});
+
+test('API: 잘못된 요청은 500 이 아니라 400 (깨진 주소·깨진 JSON·객체가 아닌 JSON)', async () => {
+  const db = dbm.open(':memory:'); store.seed(db);
+  const { server } = createApp(db); await new Promise(r => server.listen(0, r));
+  const base = 'http://127.0.0.1:' + server.address().port;
+  const raw = (p, body) => fetch(base + p, { method: 'POST', headers: { 'content-type': 'application/json' }, body });
+  let r = await fetch(base + '/%E0%A4%A'); assert.equal(r.status, 400);                       // 잘못된 퍼센트 인코딩
+  r = await raw('/api/reports', '{bad'); assert.equal(r.status, 400); assert.deepEqual(await r.json(), { error: 'bad request' });
+  r = await raw('/api/push/subscribe', 'null'); assert.equal(r.status, 400);                 // 예전에는 TypeError 로 500
+  r = await raw('/api/push/subscribe', '[1,2]'); assert.equal(r.status, 400);
+  r = await raw('/api/reports', 'null'); assert.equal(r.status, 404);                        // 빈 객체로 보고 '없는 공지'
+  server.close();
+});
+
+test('parseDetail: 첨부파일·이미지는 http(s) 주소만 받는다 (javascript: 링크 차단)', () => {
+  const html = '<div class="b-content-box"><img src="javascript:alert(1)"><img src="/img/a.png"></div>' +
+    '<div class="b-file-box"><a href="javascript:alert(document.cookie)">안내.hwp</a><a href="data:text/html,x">x.html</a><a href="/files/ok.pdf">신청서.pdf</a></div>';
+  const d = S.parseDetail(html, 'https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=1');
+  assert.deepEqual(d.attachments.map(a => a.url), ['https://www.catholic.ac.kr/files/ok.pdf']);
+  assert.deepEqual(d.images, ['https://www.catholic.ac.kr/img/a.png']);
 });
 
 test('이미지 공지: OCR 로 읽은 글자에서 대상·마감일을 뽑고, 읽은 글자는 첨부 행에 남긴다', async () => {
@@ -501,7 +541,7 @@ test('웹 파일: 모든 web/*.js 가 문법 오류 없이 읽힌다 (서비스 
     assert.doesNotThrow(() => new vm.Script(src, { filename: f }), f);
     assert.ok(!/[�]|媛|怨듭/.test(src), f + ': 글자가 깨져 있다');
   }
-  assert.match(fs.readFileSync(path.join(dir, 'sw.js'), 'utf8'), /'가톨리미'/);
+  assert.match(fs.readFileSync(path.join(dir, 'sw.js'), 'utf8'), /'가대포켓'/);
 });
 test('알림 모아 보기: 이 기기 구독으로 보낸 알림만 최신 순으로, 실패한 전송은 빼고', async () => {
   const db = dbm.open(':memory:'); store.seed(db);

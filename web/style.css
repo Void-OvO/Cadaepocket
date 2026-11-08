@@ -1,4 +1,4 @@
-/* 가톨리미 시연 화면 공통 스타일 (390 x 844 모바일 화면) · 파란색 테마 */
+/* 가대포켓 시연 화면 공통 스타일 (390 x 844 모바일 화면) · 파란색 테마 */
 .ph{--paper:#F3F5F9;--card:#FFFFFF;--ink:#1B2230;--sub:#4F5A72;--line:#DDE2EC;--brand:#1D4E9E;--brand-soft:#E3ECFA;
   position:relative;width:100%;max-width:520px;height:100vh;height:100dvh;margin:0 auto;display:flex;flex-direction:column;overflow:hidden;background:var(--paper);color:var(--ink);
   font-family:'IBM Plex Sans KR','Noto Sans SC','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;font-size:15px;line-height:1.45}
@@ -211,6 +211,8 @@ html,body,*{touch-action:manipulation}
 /* 마지막 업데이트 시각 (목록 머리·공지 상세) */
 .ph .upd{display:flex;align-items:center;gap:6px;color:var(--sub);font-size:12.5px;margin:0 0 10px}
 .ph .upd::before{content:'';flex:none;width:7px;height:7px;border-radius:50%;background:#2E8B57}
+.ph .upd.wait::before{background:#9AA3B2}
+.ph .upd.err::before{background:#C0392B}
 
 /* 학과 자동완성 */
 .ph .acwrap{position:relative}

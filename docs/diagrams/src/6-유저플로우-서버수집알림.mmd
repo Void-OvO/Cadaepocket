@@ -1,0 +1,31 @@
+flowchart TD
+  CR(["주기 수집 · 기본 30분"]) --> LS["게시판별 목록 수집<br/>통합 · 단과대 · 학과"]
+  LS --> PG["앞 2페이지는 항상 읽기"]
+  PG --> MORE{"이 페이지에 처음 보는<br/>최근 30일 글이 있나?<br/>고정글은 세지 않음"}
+  MORE -- "있음 · 상한 15페이지(학과 5) 전" --> NXT["다음 페이지"]
+  NXT --> MORE
+  MORE -- "없음 · 상한 도달" --> MG["같은 글 병합<br/>campus_id + external_no<br/>notice_board 에 게시판·고정글 기록"]
+  MG --> HS{"내용 해시 비교"}
+  HS -- "처음 본 글" --> NEW["notice + version 1<br/>event new"]
+  HS -- "해시 달라짐" --> CHV["새 notice_version<br/>notice_change 기록<br/>event change"]
+  HS -- "같음" --> CHK["checked_at 갱신"]
+  NEW --> AN
+  CHV --> AN["분석"]
+  AN --> AI{"Claude 키 있음?<br/>학과 게시판은 기본 규칙 기반"}
+  AI -- "예" --> CL["Claude: 본문 + 포스터 이미지<br/>자격요건 · 요약 · 번역"]
+  AI -- "아니오 · 실패" --> RB["규칙 기반 + Tesseract OCR"]
+  CL --> SA["notice_analysis · translation 저장"]
+  RB --> SA
+  SA --> TR["번역 누락분 DeepL 보충"]
+  TR --> NT["알림 판단"]
+
+  NT --> N1{"new"}
+  N1 -- "학과 게시판 공지 · 3일 넘은 글<br/>알림 켜기 전 공지 · 분류 끔<br/>학적·이수 학기로 대상 아님" --> SKIP["보내지 않음"]
+  N1 -- "통과" --> SEND
+  NT --> N2{"change"}
+  N2 -- "저장한 공지 + 정정 알림 켬" --> SEND
+  NT --> N3{"deadline"}
+  N3 -- "저장한 공지 + 고른 D-7·3·1" --> SEND
+  SEND["Web Push 발송<br/>dedupe_key 로 중복 방지"] --> LOG["push_log 기록"]
+  SEND -- "404 · 410" --> DEL["만료 구독 삭제"]
+  LOG --> DEV["기기 알림 표시 → 탭하면 상세"]

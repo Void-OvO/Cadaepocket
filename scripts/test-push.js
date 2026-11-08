@@ -12,9 +12,9 @@ if (!process.argv.includes('--send')) process.exit(0);
 if (!push.enabled()) { console.log('VAPID 키가 없어 보낼 수 없어요'); process.exit(1); }
 
 const COPY = {
-  ko: { title: '가톨리미 테스트 알림', body: '알림이 잘 도착했어요. 내게 맞는 새 공지와 저장한 공지의 마감·정정 소식을 이렇게 알려드릴게요.' },
-  en: { title: 'Catolimi test notification', body: 'Notifications are working. We will alert you about new notices and deadlines like this.' },
-  zh: { title: 'Catolimi 测试通知', body: '通知已成功送达。我们会这样提醒您新通知和截止日期。' }
+  ko: { title: '가대포켓 테스트 알림', body: '알림이 잘 도착했어요. 내게 맞는 새 공지와 저장한 공지의 마감·정정 소식을 이렇게 알려드릴게요.' },
+  en: { title: 'CadaePocket test notification', body: 'Notifications are working. We will alert you about new notices and deadlines like this.' },
+  zh: { title: 'CadaePocket 测试通知', body: '通知已成功送达。我们会这样提醒您新通知和截止日期。' }
 };
 (async () => {
   const tally = {};

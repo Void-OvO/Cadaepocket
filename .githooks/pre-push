@@ -1,0 +1,15 @@
+#!/bin/sh
+# master 로의 push 는 develop 에서 통합 테스트를 마친 뒤에만.
+# 테스트를 마치고 master 에 올릴 때는: ALLOW_MASTER_PUSH=1 git push origin master
+# (PowerShell: $env:ALLOW_MASTER_PUSH=1; git push origin master; Remove-Item Env:ALLOW_MASTER_PUSH)
+while read local_ref local_sha remote_ref remote_sha; do
+  if [ "$remote_ref" = "refs/heads/master" ] && [ "$ALLOW_MASTER_PUSH" != "1" ]; then
+    echo ""
+    echo "  master 로 push 하려고 해요. master 에는 develop 통합 테스트를 마친 코드만 올립니다."
+    echo "  테스트를 마쳤다면 GitHub 에서 develop -> master PR 로 합치거나,"
+    echo "  ALLOW_MASTER_PUSH=1 을 붙여 다시 push 하세요 (CONTRIBUTING.md 5절)."
+    echo ""
+    exit 1
+  fi
+done
+exit 0
