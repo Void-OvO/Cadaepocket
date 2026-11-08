@@ -227,8 +227,8 @@ test('push: RFC 8291 암호화 → 복호화 왕복', () => {
   const j = ua.publicKey.export({ format: 'jwk' });
   const raw = Buffer.concat([Buffer.from([4]), Buffer.from(j.x, 'base64url'), Buffer.from(j.y, 'base64url')]);
   const auth = crypto.randomBytes(16).toString('base64url');
-  const body = P.encrypt('{"hi":"가톨리미"}', raw.toString('base64url'), auth);
-  assert.equal(P.decrypt(body, ua.privateKey, raw, auth), '{"hi":"가톨리미"}');
+  const body = P.encrypt('{"hi":"가대포켓"}', raw.toString('base64url'), auth);
+  assert.equal(P.decrypt(body, ua.privateKey, raw, auth), '{"hi":"가대포켓"}');
 });
 test('push: RFC 8291 부록 A 시험 벡터', () => {
   const b = s => Buffer.from(s, 'base64url');
@@ -541,7 +541,7 @@ test('웹 파일: 모든 web/*.js 가 문법 오류 없이 읽힌다 (서비스 
     assert.doesNotThrow(() => new vm.Script(src, { filename: f }), f);
     assert.ok(!/[�]|媛|怨듭/.test(src), f + ': 글자가 깨져 있다');
   }
-  assert.match(fs.readFileSync(path.join(dir, 'sw.js'), 'utf8'), /'가톨리미'/);
+  assert.match(fs.readFileSync(path.join(dir, 'sw.js'), 'utf8'), /'가대포켓'/);
 });
 test('알림 모아 보기: 이 기기 구독으로 보낸 알림만 최신 순으로, 실패한 전송은 빼고', async () => {
   const db = dbm.open(':memory:'); store.seed(db);

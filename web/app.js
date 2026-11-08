@@ -19,7 +19,7 @@
 
   function load() {
     try {
-      var s = JSON.parse(localStorage.getItem('catolimi.profile'));
+      var s = JSON.parse(localStorage.getItem('cadaepocket.profile'));
       if (s) {
         if (s.status === '졸업 예정') s.status = '재학';               // 졸업 예정은 없앴다: 4학년 재학으로 본다
         var p = Object.assign({}, DEF, s, { push: Object.assign({}, DEF.push, s.push || {}) });
@@ -30,12 +30,12 @@
     return JSON.parse(JSON.stringify(DEF));
   }
   function save() {
-    try { localStorage.setItem('catolimi.profile', JSON.stringify(profile)); } catch (e) {}
+    try { localStorage.setItem('cadaepocket.profile', JSON.stringify(profile)); } catch (e) {}
     idbSet('profile', profile);                                   // 서비스 워커가 푸시를 걸러낼 때 읽는다
   }
   function idbSet(k, v) {
     try {
-      var r = indexedDB.open('catolimi', 1);
+      var r = indexedDB.open('cadaepocket', 1);
       r.onupgradeneeded = function () { r.result.createObjectStore('kv'); };
       r.onsuccess = function () { var tx = r.result.transaction('kv', 'readwrite'); tx.objectStore('kv').put(v, k); };
     } catch (e) {}
@@ -113,9 +113,9 @@
     if (!profile.campus) return Promise.resolve();
     return api('/api/notices?campus=' + profile.campus).then(function (j) {
       notices = j.notices; cacheAt = j.at; feedUpdatedAt = j.updatedAt || null; ui.offline = false; ui.loadErr = false;
-      try { localStorage.setItem('catolimi.notices.' + profile.campus, JSON.stringify(j)); } catch (e) {}
+      try { localStorage.setItem('cadaepocket.notices.' + profile.campus, JSON.stringify(j)); } catch (e) {}
     }).catch(function () {
-      try { var j = JSON.parse(localStorage.getItem('catolimi.notices.' + profile.campus)); if (j) { notices = j.notices; cacheAt = j.at; feedUpdatedAt = j.updatedAt || null; ui.offline = true; } } catch (e) {}
+      try { var j = JSON.parse(localStorage.getItem('cadaepocket.notices.' + profile.campus)); if (j) { notices = j.notices; cacheAt = j.at; feedUpdatedAt = j.updatedAt || null; ui.offline = true; } } catch (e) {}
       // 저장해 둔 목록도 없으면 '공지 없음' 대신 '불러오지 못함 · 다시 시도'를 보여 준다
       ui.loadErr = !notices.length;
     }).then(function () { ui.loaded = true; render(); fetchDept(); });
@@ -124,7 +124,7 @@
   function fetchDept() {
     var d = myDept();
     if (!d || !d.board) { dept = { board: null, notices: [], updatedAt: null, loaded: true, offline: false }; return Promise.resolve(); }
-    var key = 'catolimi.dept.' + d.board;
+    var key = 'cadaepocket.dept.' + d.board;
     if (dept.board !== d.board) dept = { board: d.board, notices: [], updatedAt: null, loaded: false, offline: false };
     return api('/api/notices?campus=' + d.campus + '&board=' + encodeURIComponent(d.board)).then(function (j) {
       dept = { board: d.board, notices: j.notices, updatedAt: j.updatedAt || null, loaded: true, offline: false };
@@ -147,7 +147,7 @@
     }).join('') + '</nav>';
   }
   function bar(inner) { return '<div class="bar">' + inner + '</div>'; }
-  function logo() { return '<div class="logo"><span class="mark"></span>' + esc(L() === 'ko' ? '가톨리미' : 'Catolimi') + '</div>'; }
+  function logo() { return '<div class="logo"><span class="mark"></span>' + esc(L() === 'ko' ? '가대포켓' : 'CadaePocket') + '</div>'; }
   function toastHtml() { return ui.toast ? '<div class="toast" role="status">' + esc(ui.toast) + '</div>' : ''; }
 
   /* m: 해당 여부('match'|'maybe'|'no'). null 이면 해당 여부 배지를 달지 않는다 (학과 탭: 내 학과 공지라 모두 해당)
@@ -493,8 +493,8 @@
   /* ───────── 뷰: 받은 알림 모아 보기 ─────────
    * 서버가 이 기기 구독으로 보낸 알림 기록 + 이 기기에 남겨 둔 기록(구독을 다시 만들어도 예전 알림이 남게) */
   var alerts = { items: [], loaded: false, noSub: false };
-  function alertsCache() { try { return JSON.parse(localStorage.getItem('catolimi.alerts')) || []; } catch (e) { return []; } }
-  function alertsSeen() { try { return localStorage.getItem('catolimi.alerts.seen') || ''; } catch (e) { return ''; } }
+  function alertsCache() { try { return JSON.parse(localStorage.getItem('cadaepocket.alerts')) || []; } catch (e) { return []; } }
+  function alertsSeen() { try { return localStorage.getItem('cadaepocket.alerts.seen') || ''; } catch (e) { return ''; } }
   function hasUnread() { var a = alerts.items[0]; return !!(a && a.at > alertsSeen()); }
   function bell() {
     var dot = hasUnread() ? '<span class="dot" aria-hidden="true"></span>' : '';
@@ -507,7 +507,7 @@
     var done = function () {
       alerts.loaded = true; var r = route();
       // 알림 화면을 보고 있으면 지금까지 받은 것을 읽음으로 (이번 방문에는 prevSeen 기준으로 '새 알림' 표시를 그대로 둔다)
-      if (r === '/alerts' && alerts.items[0]) { try { localStorage.setItem('catolimi.alerts.seen', alerts.items[0].at); } catch (e) {} }
+      if (r === '/alerts' && alerts.items[0]) { try { localStorage.setItem('cadaepocket.alerts.seen', alerts.items[0].at); } catch (e) {} }
       if (r === '/alerts' || r === '/') render();
     };
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) { alerts.noSub = true; return done(); }
@@ -518,7 +518,7 @@
         var seen = {}, all = j.items.concat(cached).filter(function (a) { var k = a.kind + ':' + a.at; if (seen[k]) return false; seen[k] = 1; return true; });
         all.sort(function (a, b) { return a.at < b.at ? 1 : a.at > b.at ? -1 : 0; });
         alerts.items = all.slice(0, 100);
-        try { localStorage.setItem('catolimi.alerts', JSON.stringify(alerts.items)); } catch (e) {}
+        try { localStorage.setItem('cadaepocket.alerts', JSON.stringify(alerts.items)); } catch (e) {}
       });
     }).catch(function () {}).then(done);
   }

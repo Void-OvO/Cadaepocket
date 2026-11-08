@@ -1,5 +1,5 @@
 'use strict';
-var V = 'catolimi-v27';
+var V = 'cadaepocket-v27';
 var SHELL = ['/', '/index.html', '/style.css', '/app.js', '/match.js', '/depts.js', '/i18n.js', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon.svg'];
 
 self.addEventListener('install', function (e) { e.waitUntil(caches.open(V).then(function (c) { return c.addAll(SHELL); }).then(function () { return self.skipWaiting(); })); });
@@ -38,7 +38,7 @@ self.addEventListener('fetch', function (e) {
 /* 푸시: 대상 아닌 공지는 서버가 구독 때 받은 대략적인 조건(학적·이수 학기·교환 여부)으로 미리 거른다.
  * 여기서 조용히 버리면 브라우저(Chrome·Edge)가 "알림 없는 푸시"로 보고 구독을 끊을 수 있으므로, 받은 알림은 항상 보여 준다. */
 self.addEventListener('push', function (e) {
-  var d; try { d = e.data.json(); } catch (x) { d = { title: '가톨리미', body: '새 알림이 있어요', kind: 'misc', id: 0 }; }
+  var d; try { d = e.data.json(); } catch (x) { d = { title: '가대포켓', body: '새 알림이 있어요', kind: 'misc', id: 0 }; }
   e.waitUntil(self.registration.showNotification(d.title, { body: d.body, tag: d.kind + ':' + d.id, icon: '/icons/icon-192.png', badge: '/icons/icon-192.png', data: { url: d.url || '/' } })
     // 앱이 열려 있으면 '받은 알림' 목록을 새로 불러오도록 알린다
     .then(function () { return self.clients.matchAll({ type: 'window' }); }).then(function (cs) { cs.forEach(function (c) { c.postMessage({ type: 'push' }); }); }));

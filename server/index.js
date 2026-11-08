@@ -139,7 +139,7 @@ function start() {
   const db = dbm.open();
   if (!db.prepare('SELECT 1 FROM notice LIMIT 1').get()) { console.log('[boot] 빈 DB — 시드 공지 ' + store.seed(db) + '건을 넣었어요.'); }
   const app = createApp(db);
-  app.server.listen(cfg.port, cfg.host, () => console.log(`가톨리미 서버 http://${cfg.host === '0.0.0.0' ? 'localhost' : cfg.host}:${cfg.port}  (푸시 ${push.enabled() ? 'ON' : 'OFF — npm run vapid'}, AI ${cfg.anthropicKey ? 'Claude' : '규칙 기반'}, 번역 ${cfg.anthropicKey ? 'Claude' : cfg.deeplKey ? 'DeepL' : 'OFF'})`));
+  app.server.listen(cfg.port, cfg.host, () => console.log(`가대포켓 서버 http://${cfg.host === '0.0.0.0' ? 'localhost' : cfg.host}:${cfg.port}  (푸시 ${push.enabled() ? 'ON' : 'OFF — npm run vapid'}, AI ${cfg.anthropicKey ? 'Claude' : '규칙 기반'}, 번역 ${cfg.anthropicKey ? 'Claude' : cfg.deeplKey ? 'DeepL' : 'OFF'})`));
   const tick = () => app.runCrawl().then(r => r && !r.skipped && console.log('[crawl]', JSON.stringify(r))).catch(e => console.warn('[crawl] 실패', e.message));
   if (cfg.crawlIntervalMin > 0) { setTimeout(tick, 5000); setInterval(tick, cfg.crawlIntervalMin * 60000); }
 }

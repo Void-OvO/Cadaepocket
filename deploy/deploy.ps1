@@ -1,5 +1,5 @@
 ﻿<#
-  가톨리미를 VPS 에 배포·업데이트합니다 (Windows PowerShell, 이 PC 에서 실행).
+  가대포켓를 VPS 에 배포·업데이트합니다 (Windows PowerShell, 이 PC 에서 실행).
 
   예)  .\deploy\deploy.ps1 -Server 3.35.12.34 -Key C:\Users\me\Downloads\LightsailDefaultKey-ap-northeast-2.pem
        .\deploy\deploy.ps1 -Server 3.35.12.34 -Key ...pem -User ubuntu -Domain notice.example.com
@@ -21,7 +21,7 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
-$tmp = Join-Path $env:TEMP ('catolimi-deploy-' + [guid]::NewGuid().ToString('N').Substring(0, 8))
+$tmp = Join-Path $env:TEMP ('cadaepocket-deploy-' + [guid]::NewGuid().ToString('N').Substring(0, 8))
 New-Item -ItemType Directory -Path $tmp | Out-Null
 $target = "$User@$Server"
 $sshOpt = @('-i', $Key, '-o', 'StrictHostKeyChecking=accept-new', '-o', 'ServerAliveInterval=30')
@@ -32,7 +32,7 @@ try {
   icacls $Key /inheritance:r /grant:r "$($env:USERNAME):(R)" | Out-Null
 
   Write-Host '==> 1/4 코드 묶기'
-  $tarball = Join-Path $tmp 'catolimi.tar.gz'
+  $tarball = Join-Path $tmp 'cadaepocket.tar.gz'
   Push-Location $root
   # 어떤 커밋을 배포했는지 서버 /api/health 의 revision 에 남긴다 (커밋 안 한 수정이 있으면 +dirty)
   $rev = $null
@@ -54,16 +54,16 @@ try {
     $pick = Get-Content (Join-Path $root '.env') | Where-Object { $_ -match '^(DEEPL_API_KEY|ANTHROPIC_API_KEY|ANTHROPIC_MODEL|DEPT_AI|CRAWL_DEPTS)=.+' }
     if ($pick) {
       Write-Host ('==> 2/4 API 키 올리기: ' + (($pick | ForEach-Object { ($_ -split '=')[0] }) -join ', '))
-      $envFile = Join-Path $tmp 'catolimi.env'
+      $envFile = Join-Path $tmp 'cadaepocket.env'
       [IO.File]::WriteAllText($envFile, (($pick -join "`n") + "`n"))
       $files += $envFile
     } else { Write-Host '==> 2/4 올릴 API 키 없음' }
   } else { Write-Host '==> 2/4 API 키 건너뜀' }
 
-  if (-not $NoData -and (Test-Path (Join-Path $root 'data\catolimi.db'))) {
+  if (-not $NoData -and (Test-Path (Join-Path $root 'data\cadaepocket.db'))) {
     Write-Host '==> 3/4 수집한 공지 DB 사본 만들기 (실행 중인 서버가 있어도 안전한 VACUUM INTO)'
-    $dbCopy = Join-Path $tmp 'catolimi.db'
-    node (Join-Path $root 'deploy\snapshot-db.js') (Join-Path $root 'data\catolimi.db') $dbCopy
+    $dbCopy = Join-Path $tmp 'cadaepocket.db'
+    node (Join-Path $root 'deploy\snapshot-db.js') (Join-Path $root 'data\cadaepocket.db') $dbCopy
     if ($LASTEXITCODE -ne 0) { throw 'DB 사본을 만들지 못했어요 (-NoData 로 건너뛸 수 있어요)' }
     $files += $dbCopy
   } else { Write-Host '==> 3/4 DB 건너뜀 (서버에서 처음부터 수집)' }
