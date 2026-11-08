@@ -1,6 +1,6 @@
 {
-  "name": "가톨리미 — 내게 맞는 학교 공지",
-  "short_name": "가톨리미",
+  "name": "가대포켓 — 내게 맞는 학교 공지",
+  "short_name": "가대포켓",
   "description": "가톨릭대학교 성심·성의 공지 중 나에게 해당되는 것만 골라 알려드려요.",
   "lang": "ko", "start_url": "/", "scope": "/", "display": "standalone",
   "background_color": "#F3F5F9", "theme_color": "#1D4E9E",

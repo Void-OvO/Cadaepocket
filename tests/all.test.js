@@ -227,8 +227,8 @@ test('push: RFC 8291 암호화 → 복호화 왕복', () => {
   const j = ua.publicKey.export({ format: 'jwk' });
   const raw = Buffer.concat([Buffer.from([4]), Buffer.from(j.x, 'base64url'), Buffer.from(j.y, 'base64url')]);
   const auth = crypto.randomBytes(16).toString('base64url');
-  const body = P.encrypt('{"hi":"가톨리미"}', raw.toString('base64url'), auth);
-  assert.equal(P.decrypt(body, ua.privateKey, raw, auth), '{"hi":"가톨리미"}');
+  const body = P.encrypt('{"hi":"가대포켓"}', raw.toString('base64url'), auth);
+  assert.equal(P.decrypt(body, ua.privateKey, raw, auth), '{"hi":"가대포켓"}');
 });
 test('push: RFC 8291 부록 A 시험 벡터', () => {
   const b = s => Buffer.from(s, 'base64url');
@@ -541,7 +541,7 @@ test('웹 파일: 모든 web/*.js 가 문법 오류 없이 읽힌다 (서비스 
     assert.doesNotThrow(() => new vm.Script(src, { filename: f }), f);
     assert.ok(!/[�]|媛|怨듭/.test(src), f + ': 글자가 깨져 있다');
   }
-  assert.match(fs.readFileSync(path.join(dir, 'sw.js'), 'utf8'), /'가톨리미'/);
+  assert.match(fs.readFileSync(path.join(dir, 'sw.js'), 'utf8'), /'가대포켓'/);
 });
 test('알림 모아 보기: 이 기기 구독으로 보낸 알림만 최신 순으로, 실패한 전송은 빼고', async () => {
   const db = dbm.open(':memory:'); store.seed(db);
@@ -561,4 +561,15 @@ test('알림 모아 보기: 이 기기 구독으로 보낸 알림만 최신 순�
   assert.equal(r.status, 200); assert.equal((await r.json()).items.length, 2);
   assert.equal((await fetch(base + '/api/push/history', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{"endpoint":"x"}' })).status, 404);
   app.close();
+});
+test('이름 변경: 새 cadaepocket.db 가 없으면 같은 폴더의 예전 catolimi.db 를 이름만 바꿔 그대로 쓴다', () => {
+  const dir = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'rename-'));
+  const old = dbm.open(path.join(dir, 'catolimi.db'));
+  old.exec("CREATE TABLE keep_me (note TEXT); INSERT INTO keep_me VALUES ('예전 데이터')");
+  old.close();
+  const db = dbm.open(path.join(dir, 'cadaepocket.db'));
+  assert.equal(db.prepare('SELECT note FROM keep_me').get().note, '예전 데이터');
+  db.close();
+  assert.equal(fs.existsSync(path.join(dir, 'catolimi.db')), false);
+  fs.rmSync(dir, { recursive: true, force: true });
 });

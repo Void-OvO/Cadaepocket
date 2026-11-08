@@ -17,7 +17,7 @@ module.exports = {
   root,
   port: Number(process.env.PORT || 3000),
   host: process.env.HOST || '0.0.0.0',                          // 배포 서버에서는 127.0.0.1 (밖에서는 Caddy 가 HTTPS 로 받아 넘김)
-  dbFile: process.env.DB_FILE || path.join(root, 'data', 'catolimi.db'),
+  dbFile: process.env.DB_FILE || path.join(root, 'data', 'cadaepocket.db'),
   webDir: path.join(root, 'web'),
   adminToken: process.env.ADMIN_TOKEN || '',
   crawlIntervalMin: Number(process.env.CRAWL_INTERVAL_MIN || 30),
@@ -36,7 +36,7 @@ module.exports = {
   ocrCmd: process.env.OCR_CMD || 'tesseract',
   ocrLang: process.env.OCR_LANG || 'kor+eng',
   ocrMaxImages: Number(process.env.OCR_MAX_IMAGES || 4),
-  userAgent: process.env.CRAWL_USER_AGENT || 'CatolimiBot/0.1 (student project; contact: set CRAWL_USER_AGENT)',
+  userAgent: process.env.CRAWL_USER_AGENT || 'CadaePocketBot/0.1 (student project; contact: set CRAWL_USER_AGENT)',
   anthropicKey: process.env.ANTHROPIC_API_KEY || '',
   anthropicModel: process.env.ANTHROPIC_MODEL || 'claude-sonnet-5-5',
   deeplKey: process.env.DEEPL_API_KEY || '',                     // 공지 제목·요약 영어·중국어 번역 (DeepL API Free 키는 ':fx' 로 끝남)
